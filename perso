@@ -29,6 +29,3 @@ grep -q ".bash_env" ${file} || echo "
 
 . ${file}
 
-########################  END
-
-_partadd "${_PART}" "${_FILE_DONE}"
