@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# write by Aguy
+
+########################  MAIN
+
+_echot "------- create paths"
+paths="ext/backup ext/ovh ext/shared /home/shared"
+for path in ${paths}; do
+	[ -d "${path}" ] || sudo mkdir -p ${path}
+	sudo chown ${USER}:${USER} ${path}
+done
+
+_echot "------- .bash_env"
+file=${HOME}/.bash_env
+file_from=${_PATH_BS}/conf/.bash_env
+_keepmv ${file}
+_eval ln -s ${file_from} ${file}
+sudo sed -i "s|_PATH_BS|${_PATH_BS}|" ${file_from}
+
+_echot "------- .bashrc env"
+file=${HOME}/.bashrc
+grep -q ".bash_env" ${file} || echo "
+# global variables
+[ -f \${HOME}/.bash_env ] && . \${HOME}/.bash_env
+
+# functions
+[ -f \${HOME}/.bash_functions ] && . \${HOME}/.bash_functions" >> ${file}
+
+. ${file}
+
+########################  END
+
+_partadd "${_PART}" "${_FILE_DONE}"
