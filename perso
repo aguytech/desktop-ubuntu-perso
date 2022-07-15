@@ -26,5 +26,11 @@ grep -q ".bash_env" ${file} || echo "
 
 # functions
 [ -f \${HOME}/.bash_functions ] && . \${HOME}/.bash_functions" >> ${file}
-
 . ${file}
+
+_echot "------- firefox tweaks"
+path=${HOME}/.mozilla/firefox/${USER}
+if [ -d "${path}" ]; then
+	ln -sv "${_PATH_BS}/conf/user.js" ${path}
+	chown ${USER}:${USER} ${path}
+fi
