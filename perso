@@ -28,4 +28,3 @@ grep -q ".bash_env" ${file} || echo "
 [ -f \${HOME}/.bash_functions ] && . \${HOME}/.bash_functions" >> ${file}
 
 . ${file}
-
