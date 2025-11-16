@@ -1,17 +1,32 @@
 #!/bin/bash
 
+######################## CONF
+
+S_TRACE=debug
+_PATH_BASE=$( readlink -f ${0%/*} )
+_PATH_CONF=${HOME}/.config/desktop-install
+_PATH_LOG=/var/log/desktop-install
+_CMD="sudo apt"
+_CMD_INS="sudo apt install -y"
+
+# inc
+file=${_PATH_BASE}/bs/inc
+! [ -f "${file}" ] && echo "Unable to find file: ${file}" && exit 1
+! . ${file} && echo "Errors while sourcing file: ${file}" && exit 1
+
 ########################  FUNCTIONS
 
 file=${_PATH_BASE}/perso/inc
 ! [ -f "${file}" ] && _exite "Unable to find file: ${file}"
-! . ${file} && _exite "Errors while sourcing file: ${file}. See log files in /var/log/foralyse"
+! . ${file} && _exite "Errors while sourcing file: ${file}. See log files in /var/log/desktop-install"
 
 ########################  SUB
 
 _source_perso conf
-#source_perso firefox
+_source_perso root
+_source_perso mozilla
 #_source_perso sublimetext
 #_source_perso sublimemerge
 
-_echoa "\n-----------------------------------------------"
+_echoa "\n------------------------------------"
 _echoA "End of part perso"

@@ -2,11 +2,6 @@
 
 ########################  SYSTEM
 
-_echot "------- conf sources"
-# Change the mirror of software sources
-_evalr pacman-mirrors --country-list
-_evalr pacman-mirrors -c France
-
 _echot "------- create paths"
 paths="ext/backup ext/ovh ext/shared /home/shared"
 for path in ${paths}; do
@@ -16,12 +11,17 @@ done
 
 ########################  USER
 
+_echot "------- reduce swappiness"
+_evalr swapoff -av
+sudo sh -c 'echo vm.swappiness=20 > /etc/sysctl.d/99-swappiness.conf' # limit swap
+_evalr swapon -v
+
 _echot "------- .bash_env"
 file=${HOME}/.bash_env
 file_from=${_PATH_BS}/conf/.bash_env
 _keepmv ${file}
 _eval ln -s ${file_from} ${file}
-_eval sed -i "s|_PATH_BS|${_PATH_BS}|" ${file_from}
+sed -i "s|_PATH_BS|${_PATH_BS}|" ${file_from}
 
 _echot "------- .bashrc env"
 file=${HOME}/.bashrc
@@ -33,9 +33,22 @@ grep -q ".bash_env" ${file} || echo "
 [ -f \${HOME}/.bash_functions ] && . \${HOME}/.bash_functions" >> ${file}
 . ${file}
 
-_echot "------- firefox tweaks"
-path=${HOME}/.mozilla/firefox/${USER}
-if [ -d "${path}" ]; then
-	_eval ln -s "${_PATH_BS}/conf/user.js" ${path}
-	_eval chown ${USER}:${USER} ${path}
-fi
+_echot "------- language fr"
+packages="hunspell-fr hunspell-fr-classical hyphen-fr mythes-fr tesseract-ocr-fra"
+packages+=" libreoffice-l10n-fr"
+${_CMD_INS} ${packages} && _partadd "${packages}" ${_FILE_PCK} \
+	|| { _echoE "Unable to install: ${packages}"; return 1; }
+
+_echot "------- git config"
+git config --global user.name "aguy tech"
+git config --global user.email aguytech@free.fr
+git config --global core.editor vim
+git config --global merge.tool meld
+
+file=${HOME}/.gitconfig
+grep -q '^[alias]' ${file} || echo -e "
+[alias]
+\tci = commit
+\tco = checkout
+\tst = status
+\tbr = branch" >> ${file}

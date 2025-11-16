@@ -1,0 +1,55 @@
+#!/bin/bash
+
+########################  REMOVE
+
+_echot "------- firefox remove snap"
+_evalr snap remove --purge firefox
+
+_echot "------- firefox remove"
+_evalr apt remove -y --purge firefox*
+
+########################  FIREFOX
+
+_echot "------- block snap"
+echo 'Package: *
+Pin: release o=LP-PPA-mozillateam
+Pin-Priority: 1000' | sudo tee /etc/apt/preferences.d/mozillateam
+
+_echot "------- firefox add ppa"
+_evalr add-apt-repository -yn ppa:mozillateam/ppa
+
+_echot "------- apt update"
+_evalr apt update
+
+_echot "------- apt ugrade"
+_evalr apt upgrade -y
+
+_echot "------- install"
+${_CMD_INS} firefox
+
+_echot "------- profile"
+_echoA "Choose the right path to create a profile & close application"
+firefox --ProfileManager
+
+_echot "------- user.js"
+path=${HOME}/.mozilla/firefox/${USER}
+[ -d "${path}" ] || _eval mkdir -p ${path}
+_eval ln -s "${_PATH_BS}/conf/user.js" ${path}/user.js
+_evalr chown ${USER}:${USER} ${path}
+
+########################  THUNDERBIRD
+
+_echot "------- thunderbird update"
+_evalr apt  install -y thunderbird
+
+_echot "------- thunderbird profile"
+_echoA "Choose the right path to create a profile & close application"
+ _askno "Validate to continue"
+thunderbird --ProfileManager
+
+########################  LANGUAGES
+
+_echot "------- languages"
+_echoA "Close language window after validation."
+_askno "Validate to continue"
+gnome-language-selector
