@@ -29,6 +29,7 @@ ${_CMD_INS} firefox
 
 _echot "------- profile"
 _echoA "Choose the right path to create a profile & close application"
+ _askno "Validate to continue"
 firefox --ProfileManager
 
 _echot "------- user.js"
