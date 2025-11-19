@@ -32,10 +32,10 @@ _echoA "Choose the right path to create a profile & close application"
 firefox --ProfileManager
 
 _echot "------- user.js"
-path=${HOME}/.mozilla/firefox/${USER}
-[ -d "${path}" ] || _eval mkdir -p ${path}
-_eval ln -s "${_PATH_BS}/conf/user.js" ${path}/user.js
-_evalr chown ${USER}:${USER} ${path}
+pth=${HOME}/.mozilla/firefox/${USER}
+[ -d "${pth}" ] || _eval mkdir -p ${pth}
+_eval ln -s "${_PATH_BS}/conf/user.js" ${pth}/user.js
+_evalr chown ${USER}:${USER} ${pth}
 
 ########################  THUNDERBIRD
 

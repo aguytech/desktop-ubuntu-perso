@@ -4,11 +4,11 @@ _echoT "#################### START ${_PARTDEV}"
 
 ########################  DATA
 
-path_opt=/opt/eclipse_${_ECLIPSE_THEME}
-path_conf=.eclipse_${_ECLIPSE_THEME}
-path_desk=~/.local/share/applications
-path_proj=${HOME}/dev/eclipse-workspaces-${_ECLIPSE_THEME}
-file_desk=${path_desk}/eclipse_java.desktop
+pth_opt=/opt/eclipse_${_ECLIPSE_THEME}
+pth_conf=.eclipse_${_ECLIPSE_THEME}
+pth_desk=~/.local/share/applications
+pth_proj=${HOME}/dev/eclipse-workspaces-${_ECLIPSE_THEME}
+file_desk=${pth_desk}/eclipse_java.desktop
 file_bin=/usr/bin/eclipse_${_ECLIPSE_THEME}
 
 file_desk_conf=${_PATH_BASE}/conf/eclipse_${_ECLIPSE_THEME}.desktop
@@ -18,18 +18,18 @@ _require ${file_desk_conf}
 ########################  MAIN
 
 _echot "------- backup"
-paths=
-if [ -d "${path_opt}" ] || [ -d ~/${path_conf} ] || [ -d "${path_proj}" ]; then
-	for path in ${path_opt} ~/${path_conf} ${path_proj} ${file_desk} ${file_bin}; do
-		[ -e "${path}" ] && paths+=" ${path}"
+pths=
+if [ -d "${pth_opt}" ] || [ -d ~/${pth_conf} ] || [ -d "${pth_proj}" ]; then
+	for pth in ${pth_opt} ~/${pth_conf} ${pth_proj} ${file_desk} ${file_bin}; do
+		[ -e "${pth}" ] && pths+=" ${pth}"
 	done
-	tar czf ${_PATH_SOFT_BACKUP}/eclipse_${_ECLIPSE_THEME}_backup_${_DATE}-$(date +%s).tar.gz ${path_opt} ${paths}
+	tar czf ${_PATH_SOFT_BACKUP}/eclipse_${_ECLIPSE_THEME}_backup_${_DATE}-$(date +%s).tar.gz ${pth_opt} ${pths}
 fi
 
 _echot "------- clean instance"
 # delete existing folder
-for path in ${path_opt} ~/${path_conf} ${path_proj} ${file_desk} ${file_bin}; do
-	[ -e "${path}" ] && _evalr rm -fR ${path}
+for pth in ${pth_opt} ~/${pth_conf} ${pth_proj} ${file_desk} ${file_bin}; do
+	[ -e "${pth}" ] && _evalr rm -fR ${pth}
 done
 
 ####################  RESTORE
@@ -44,9 +44,9 @@ if [ "${_ECLIPSE_DATE}" ]; then
 elif [ "${_ECLIPSE_VER}" ]; then
 
 	_echot "------- create path"
-	for path in ${path_opt} ~/${path_conf} ${path_proj}; do
-		[ -d "${path}" ] || _evalr mkdir -p ${path}
-		chown 1000:1000 "${path}"
+	for pth in ${pth_opt} ~/${pth_conf} ${pth_proj}; do
+		[ -d "${pth}" ] || _evalr mkdir -p ${pth}
+		chown 1000:1000 "${pth}"
 	done
 
 	cd /tmp
@@ -67,15 +67,15 @@ elif [ "${_ECLIPSE_VER}" ]; then
 	fi
 
 	_echot "------- install"
-	path=eclipse
-	[ -d "${path}" ] && rm -fR ${path}
+	pth=eclipse
+	[ -d "${pth}" ] && rm -fR ${pth}
 	_eval tar xzf ${file}
-	_evalr mv ${path} ${path_opt}
+	_evalr mv ${pth} ${pth_opt}
 	rm ${file}
 
 	_echot "------- ${file_bin} bind"
 	sudo [ -e "${file_bin}" ] && _evalr rm ${file_bin}
-	_evalr ln -s ${path_opt}/eclipse ${file_bin}
+	_evalr ln -s ${pth_opt}/eclipse ${file_bin}
 
 	_echot "------- launcher"
 	_eval cp ${file_desk_conf} ${file_desk}
@@ -86,11 +86,11 @@ fi
 ####################  COMMON
 
 _echot "------- conf"
-file=${path_opt}/eclipse.ini
+file=${pth_opt}/eclipse.ini
 _keepcd ${file}
 grep -q '^-Duser' ${file} || sed -i "/^-vmargs/ a-Duser.home=${HOME}/.eclipse_${_ECLIPSE_THEME}" ${file}
-sed -i "/^-Dosgi.instance.area.default/ s|=.*|=${path_proj}/init|" ${file}
-#sed -i "/^-Dosgi.instance.area.default/ s|=.*|=${path_proj}/eclipse-workspaces-${_ECLIPSE_THEME}|" ${file}
+sed -i "/^-Dosgi.instance.area.default/ s|=.*|=${pth_proj}/init|" ${file}
+#sed -i "/^-Dosgi.instance.area.default/ s|=.*|=${pth_proj}/eclipse-workspaces-${_ECLIPSE_THEME}|" ${file}
 
 _echot "------- jdk src doc"
 _CMD_INS openjdk-21-source openjdk-21-doc

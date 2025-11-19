@@ -3,10 +3,10 @@
 ########################  SYSTEM
 
 _echot "------- create paths"
-paths="ext/backup ext/ovh ext/shared /home/shared"
-for path in ${paths}; do
-	[ -d "${path}" ] || _evalr mkdir -p ${path}
-	_evalr chown ${USER}:${USER} ${path}
+pths="ext/backup ext/ovh ext/shared /home/shared"
+for pth in ${pths}; do
+	[ -d "${pth}" ] || _evalr mkdir -p ${pth}
+	_evalr chown ${USER}:${USER} ${pth}
 done
 
 ########################  USER
