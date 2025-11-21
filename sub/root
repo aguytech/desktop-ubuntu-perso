@@ -2,15 +2,15 @@
 
 ########################  MAIN
 
-_echot "------- .bash_aliases"
-file=/root/.bash_aliases
-file_from=${_PATH_BS}/conf/.bash_aliases
+_echot "------- .sh_aliases"
+file=/root/.sh_aliases
+file_from=${_PATH_BS}/conf/.sh_aliases
 _keepmv ${file}
 _evalr ln -s ${file_from} ${file}
 
-_echot "------- .bash_env"
-file=/root/.bash_env
-file_from=${_PATH_BS}/conf/.bash_env
+_echot "------- .sh_env"
+file=/root/.sh_env
+file_from=${_PATH_BS}/conf/.sh_env
 _keepmv ${file}
 _evalr ln -s ${file_from} ${file}
 
@@ -25,17 +25,17 @@ color='\\[\\033[01;31m\\]' # '\\[\\033[01;34m\\]'
 sudo sed -i 's|^\(\s*PS1=\).*00m.*$|\1"\${debian_chroot:+(\$debian_chroot)}'${color}'\\h\\[\\033[00m\\] \\W'${color}'#\\[\\033[00m\\] "|' ${file}
 sudo sed -i "/^\s*PS1=.*00m/ s|\"|'|g" ${file}
 
-sudo grep -q ".bash_env" ${file} || sudo sh -c "echo '
+sudo grep -q ".sh_env" ${file} || sudo sh -c "echo '
 # global variables
-[ -f /root/.bash_env ] && . /root/.bash_env
+[ -f /root/.sh_env ] && . /root/.sh_env
 
 # functions
-[ -f /root/.bash_functions ] && . /root/.bash_functions
+[ -f /root/.sh_functions ] && . /root/.sh_functions
 ' >> ${file}"
 # aliases
-sudo grep -q "/.bash_aliases" ${file} || sudo sh -c "echo '
-# bash_aliases
-[ -f /root/.bash_aliases ] && . /root/.bash_aliases
+sudo grep -q "/.sh_aliases" ${file} || sudo sh -c "echo '
+# sh_aliases
+[ -f /root/.sh_aliases ] && . /root/.sh_aliases
 '  >> ${file}"
 
 _echot "------- .vimrc"
