@@ -1,0 +1,6 @@
+#!/bin/bash
+
+_echot "------- aur"
+packages="libreoffice-extension-grammalecte-fr"
+# libreoffice-extension-languagetool papirus-libreoffice-theme 
+_install_aur ${packages}

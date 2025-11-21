@@ -22,11 +22,12 @@ file=${_PATH_BASE}/perso/inc
 
 ########################  SUB
 
-_source_perso conf
-_source_perso root
-_source_perso mozilla
-#_source_perso sublimetext
-#_source_perso sublimemerge
+parts_perso="global conf root mozilla"
+# sublimetext sublimemerge
+
+for part_perso in ${parts_perso}; do
+	_source_perso ${part_perso}
+done
 
 _echoa "\n------------------------------------"
 _echoA "End of part perso"
