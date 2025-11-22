@@ -54,6 +54,13 @@ for file in ~/.bashrc ~/.zshrc; do
 [ -f \${HOME}/.sh_env_perso ] && . \${HOME}/.sh_env_perso" >> ${file}
 done
 
+_echot "------- user links"
+for file in .nanorc .tmux.conf .vimrc; do
+	pth=${HOME}/${file}
+	_keepmv "${pth}"
+	_eval ln -s "${_PATH_BS}/conf/${file}" "${pth}"
+done
+
 _echot "------- language fr"
 packages="hunspell-fr hunspell-fr-classical hyphen-fr mythes-fr tesseract-ocr-fra"
 packages+=" libreoffice-l10n-fr"
