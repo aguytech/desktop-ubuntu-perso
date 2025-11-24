@@ -14,20 +14,14 @@ file=${_PATH_BASE}/bs/inc
 ! [ -f "${file}" ] && echo "Unable to find file: ${file}" && exit 1
 ! . ${file} && echo "Errors while sourcing file: ${file}" && exit 1
 
-########################  FUNCTIONS
-
-file=${_PATH_BASE}/perso/inc
-! [ -f "${file}" ] && _exite "Unable to find file: ${file}"
-! . ${file} && _exite "Errors while sourcing file: ${file}. See log files in /var/log/desktop-install"
-
 ########################  SUB
 
-parts_perso="conf root mozilla"
+subpart=perso
+parts_perso="global conf root mozilla"
 # sublimetext sublimemerge
 
-for part_perso in ${parts_perso}; do
-	_source_perso ${part_perso}
+for _PART in ${parts_perso}; do
+	_source_sub "${_PART}" ${subpart}
 done
 
-_echoa "\n------------------------------------"
-_echoA "End of part perso"
+_exit
