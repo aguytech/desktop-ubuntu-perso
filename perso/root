@@ -12,21 +12,21 @@ _require ${file_env} ${file_sh_aliases} ${file_sh_functions}
 
 _echot "------- .sh_env"
 file=/root/.sh_env
-[ -h ${file} ] && _eval rm ${file}
+[ -h ${file} ] && _evalr rm ${file}
 _keepmvts ${file}
 _evalr ln -s ${file_env} ${file}
 
 _echot "------- .sh_aliases"
 file=/root/.sh_aliases
-[ -h ${file} ] && _eval rm ${file}
+[ -h ${file} ] && _evalr rm ${file}
 _keepmvts ${file}
 _evalr ln -s ${file_sh_aliases} ${file}
 
 _echot "-------  .sh_functions"
 file=/root/.sh_functions
-[ -h ${file} ] && _eval rm ${file}
+[ -h ${file} ] && _evalr rm ${file}
 _keepmvts ${file}
-_eval ln -s ${file_sh_functions} ${file}
+_evalr ln -s ${file_sh_functions} ${file}
 
 _echot "------- common .*hrc"
 for file in /root/.bashrc /root/.zshrc; do
