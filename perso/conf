@@ -29,17 +29,17 @@ _evalr swapon -v
 
 _echot "------- .sh_env"
 file=${HOME}/.sh_env
-[ -h ${file} ] && _eval rm ${file}
+_keepmvts ${file}
 _eval ln -s ${file_env} ${file}
 
 _echot "------- .sh_aliases"
 file=~/.sh_aliases
-[ -h ${file} ] && _eval rm ${file}
+_keepmvts ${file}
 _eval ln -s ${file_sh_aliases} ${file}
 
 _echot "-------  .sh_functions"
 file=~/.sh_functions
-[ -h ${file} ] && _eval rm ${file}
+_keepmvts ${file}
 _eval ln -s ${file_sh_functions} ${file}
 
 _echot "------- .sh_env_perso"
