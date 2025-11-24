@@ -24,6 +24,6 @@ for _PART in ${parts_perso}; do
 	_source_sub "${_PART}" ${subpart}
 done
 
-_echoa "All parts has done"
+_echoa "! All parts has done !"
 
 _exit
