@@ -54,6 +54,16 @@ for file in ~/.bashrc ~/.zshrc; do
 [ -f \${HOME}/.sh_env_perso ] && . \${HOME}/.sh_env_perso" >> ${file}
 done
 
+_echot "------- .zshrc"
+echo "
+########################  SET OPTIONS
+
+# split words in string with default delimiters ' '
+setopt shwordsplit
+# allows interactive comments in console
+setopt interactivecomments
+" >> ~/.zshrc
+
 _echot "------- user links"
 for file in .nanorc .tmux.conf .vimrc; do
 	pth=${HOME}/${file}

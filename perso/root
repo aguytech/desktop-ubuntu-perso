@@ -50,6 +50,16 @@ HISTFILESIZE=50000
 [ -f ~/.sh_functions ] && . ~/.sh_functions" >> ${file}
 done
 
+_echot "------- .zshrc"
+sudo echo "
+########################  SET OPTIONS
+
+# split words in string with default delimiters ' '
+setopt shwordsplit
+# allows interactive comments in console
+setopt interactivecomments
+" >> /root/.zshrc
+
 # force color
 sudo sed -i '/^#force_color_prompt=/ s|#||' ${file}
 
