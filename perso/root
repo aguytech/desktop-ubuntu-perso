@@ -31,7 +31,7 @@ _evalr ln -s ${file_sh_functions} ${file}
 _echot "------- common .*hrc"
 for file in /root/.bashrc /root/.zshrc; do
 	_keepcpts ${file}
-	grep -sq '####  PERSO' ${file} || sudo echo "
+	grep -sq '####  PERSO' ${file} || echo "
 ########################  PERSO
 
 PS1='\[\033[01;31m\]\u@\h \[\033[1;37m\]\W\[\033[01;31m\]\$\[\033[00m\] '
@@ -47,18 +47,18 @@ HISTFILESIZE=50000
 [ -f ~/.sh_aliases ] && . ~/.sh_aliases
 
 # functions
-[ -f ~/.sh_functions ] && . ~/.sh_functions" >> ${file}
+[ -f ~/.sh_functions ] && . ~/.sh_functions" | sudo tee -a ${file}
 done
 
 _echot "------- .zshrc"
-sudo echo "
+echo "
 ########################  SET OPTIONS
 
 # split words in string with default delimiters ' '
 setopt shwordsplit
 # allows interactive comments in console
 setopt interactivecomments
-" >> /root/.zshrc
+" | sudo tee -a /root/.zshrc
 
 # force color
 sudo sed -i '/^#force_color_prompt=/ s|#||' ${file}

@@ -24,10 +24,10 @@ _evalr apt update
 _echot "------- apt ugrade"
 _evalr apt upgrade -y
 
-_echot "------- install"
+_echot "------- firefox install"
 ${_CMD_INS} firefox
 
-_echot "------- profile"
+_echot "------- firefox profile"
 _echoA "Choose the right path to create a profile & close application"
  _askno "Validate to continue"
 firefox --ProfileManager
@@ -40,7 +40,7 @@ _evalr chown ${USER}:${USER} ${pth}
 
 ########################  THUNDERBIRD
 
-_echot "------- thunderbird update"
+_echot "------- thunderbird install"
 _evalr apt  install -y thunderbird
 
 _echot "------- thunderbird profile"
