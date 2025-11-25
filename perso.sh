@@ -8,6 +8,7 @@ _PATH_CONF=/usr/local/conf
 _PATH_LOG=/var/log/desktop-install
 _CMD="_evalr apt"
 _CMD_INS="_evalr apt install -y"
+_path_base=$( readlink -f ${0%/*}/../ )
 
 # inc
 file=${_path_base}/bs/inc
