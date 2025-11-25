@@ -21,12 +21,12 @@ export DEBIAN_FRONTEND=noninteractive
 
 ########################  SUB
 
-subpart=perso
+_SPATH=perso
 parts_perso="global conf root mozilla"
 # sublimetext sublimemerge
 
 for _PART in ${parts_perso}; do
-	_source_sub "${_PART}" ${subpart}
+	_source_sub "${_PART}" ${_SPATH}
 done
 
 _echoa "! All parts has done !"

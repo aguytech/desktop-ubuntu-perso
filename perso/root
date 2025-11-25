@@ -61,7 +61,7 @@ setopt interactivecomments
 " | sudo tee -a /root/.zshrc
 
 # force color
-sudo sed -i '/^#force_color_prompt=/ s|#||' ${file}
+sudo sed -i '/^#force_color_prompt=/ s|#||' /root/.bashrc
 
 _echot "------- .vimrc"
 file=/root/.vimrc
