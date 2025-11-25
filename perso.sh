@@ -14,6 +14,10 @@ file=${_path_base}/bs/inc
 ! [ -f "${file}" ] && echo "Unable to find file: ${file}" && exit 1
 ! . ${file} && echo "Errors while sourcing file: ${file}" && exit 1
 
+########################  VARIABLES
+
+export DEBIAN_FRONTEND=noninteractive
+
 ########################  SUB
 
 subpart=perso
