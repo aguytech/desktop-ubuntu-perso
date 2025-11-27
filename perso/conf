@@ -20,6 +20,23 @@ done
 
 ########################  SYSTEM
 
+file=/etc/fstab
+if ! grep -q "${_PATH_BS}" ${file}; then
+	_echot "------- path ${_PATH_BS}"
+	pth=/home/shared/repo/bs
+	[ -d ${pth} ] || _exite "Unable to find path: '${pth}'"
+	[ -d "${_PATH_BS}" ] && _evalr rm -fR "${_PATH_BS}"
+	[ -d "${_PATH_BS}" ] || _evalr mkdir -p "${_PATH_BS}"
+	_echot "------- ${file} ${_PATH_BS}"
+	sudo sh -c "echo '# bind ${_PATH_BS}
+${pth}				${_PATH_BS}	none	defaults,bind										0 0' >> ${file}"
+	_echot "------- daemon-reload"
+	_evalr systemctl daemon-reload
+	_echot "------- bind ${_PATH_BS}"
+	_evalr mount ${_PATH_BS}
+	[ -d ${_PATH_BS} ] || _exite "Unable to find path: '${pth}'"
+fi
+
 _echot "------- reduce swappiness"
 _evalr swapoff -av
 sudo sh -c 'echo vm.swappiness=20 > /etc/sysctl.d/99-swappiness.conf' # limit swap
