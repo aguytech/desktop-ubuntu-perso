@@ -88,12 +88,6 @@ for file in .nanorc .tmux.conf .vimrc; do
 	_eval ln -s "${_PATH_BS}/conf/${file}" "${pth}"
 done
 
-_echot "------- language fr"
-packages="hunspell-fr hunspell-fr-classical hyphen-fr mythes-fr tesseract-ocr-fra"
-packages+=" libreoffice-l10n-fr"
-${_CMD_INS} ${packages} && _partadd "${packages}" ${_FILE_PCK} \
-	|| { _echoE "Unable to install: ${packages}"; return 1; }
-
 _echot "------- git config"
 git config --global user.name "aguy tech"
 git config --global user.email aguytech@free.fr

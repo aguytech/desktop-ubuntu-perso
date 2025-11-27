@@ -1,13 +1,21 @@
 #!/bin/bash
 
-_echot "------- python"
-packages="python3 python3-pip pipx"
+_echot "------- gnome-shell-extensions"
+packages="gnome-shell-extension-manager"
 ${_CMD_INS} ${packages} && _partadd "${packages}" ${_FILE_PCK} \
 	|| { _echoE "Unable to install: ${packages}"; return 1; }
 
-packages="yt-dlp"
-for package in ${packages}; do
-	_echot "------- pipx"
-	_eval pipx install ${package}
-done
+_echot "------- extensions"
+_echoA "Choose extensions to install like:"
+_echoA "  Dash to Dock"
+_echoA "  User Themes"
+_echoA "  Vitals"
+_askno "Validate to choose"
+gnome-extensions-app
+
+_echot "------- language fr"
+packages="hunspell-fr hunspell-fr-classical hyphen-fr mythes-fr tesseract-ocr-fra"
+packages+=" libreoffice-l10n-fr"
+${_CMD_INS} ${packages} && _partadd "${packages}" ${_FILE_PCK} \
+	|| { _echoE "Unable to install: ${packages}"; return 1; }
 

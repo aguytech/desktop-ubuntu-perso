@@ -29,7 +29,7 @@ ${_CMD_INS} firefox
 
 _echot "------- firefox profile"
 _echoA "Choose the right path to create a profile & close application"
- _askno "Validate to continue"
+_askno "Validate to continue"
 firefox --ProfileManager
 
 _echot "------- user.js"
@@ -45,7 +45,7 @@ _evalr apt  install -y thunderbird
 
 _echot "------- thunderbird profile"
 _echoA "Choose the right path to create a profile & close application"
- _askno "Validate to continue"
+_askno "Validate to continue"
 thunderbird --ProfileManager
 
 ########################  LANGUAGES
