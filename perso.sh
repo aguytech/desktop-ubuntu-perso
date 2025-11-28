@@ -22,13 +22,36 @@ export DEBIAN_FRONTEND=noninteractive
 ########################  SUB
 
 _SPATH=perso
-parts_perso="global python conf root mozilla"
-# sublimetext sublimemerge
-
+parts_perso="global python conf root"
 for _PART in ${parts_perso}; do
 	_source_sub "${_PART}" ${_SPATH}
 done
 
-_echoa "! All parts has done !"
+parts_install=$( ls ${_PATH_BASE}/${_SPATH} )
+
+while [ "${_PART}" != "quit" ]; do
+	_SDATE=$(date +%s) # renew _SDATE
+	parts_made=" $( grep "^${_SPATH}_" "${S_FILE_INSTALL_DONE}" | cut -d'_' -f2 | xargs ) "
+	parts2do=" "
+	for part in ${parts_install}; do
+		[ "${parts_made/ ${part} }" = "${parts_made}" ] && parts2do+="$part "
+	done
+
+	_echod "parts_made='${parts_made}'"
+	_echod "parts2do='${parts2do}'"
+
+	[ "${parts_made}" ] && _echo "Part already made: ${cyanb}${parts_made}${cclear}"
+	PS3="Give your choice: "
+	select _PART in quit ${parts2do}; do
+		if [ "${parts2do/ ${_PART} /}" != "${parts2do}" ] ; then
+			_source_sub ${_PART} ${_SPATH}
+			break
+		elif [ "${_PART}" = quit ]; then
+			break
+		else
+			_echoe "Wrong option"
+		fi
+	done
+done
 
 _exit

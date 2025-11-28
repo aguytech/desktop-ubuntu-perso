@@ -18,8 +18,6 @@ for pth in ${pths}; do
 	_evalr chown ${USER}:${USER} ${pth}
 done
 
-########################  SYSTEM
-
 file=/etc/fstab
 if ! grep -q "${_PATH_BS}" ${file}; then
 	_echot "------- path ${_PATH_BS}"
@@ -102,3 +100,4 @@ grep -q '^[alias]' ${file} || echo -e "
 \tco = checkout
 \tdi = diff
 \tst = status" >> ${file}
+

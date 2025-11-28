@@ -1,0 +1,105 @@
+#!/bin/bash
+
+cd ${HOME}
+nopart=
+
+########################  HOME SHARED
+
+pth_to_init=/home/shared
+echo "================ ${pth_to_init}"
+pths="Books Desktop dev Documents Downloads .gse-radio Help .perso Pictures repo .sublime-project Templates .themes .tmux Zotero"
+_echoa ${pths}
+_askno "Give a new list or valid the subdirectories list above to link to ${pth_to_init} or 0 to skip"
+[ "${_ANSWER}" ] && pths=${_ANSWER}
+
+if [ "${_ANSWER}" != 0 ]; then
+	for pth in ${pths}; do
+		msg=
+		pth_from=${pth}
+		pth_to=${pth_to_init}/${pth}
+		echo -n "${pth_from} "
+		if [ -e ${pth_to} ]; then
+			[ -h ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
+			[ -f ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
+			[ -d ${pth_from} ] && { rmdir ${pth_from} || msg="path is not empty"; }
+			if [ -e ${pth_from} ]; then
+				nopart=exit
+				_echoe "- !!! failed !!! ${msg}"
+			else
+				ln -s ${pth_to} ${pth_from}
+				echo "- ok"
+			fi
+		else
+			nopart=exit
+			_echoe "- *** skipped *** ${pth_to} is missing"
+		fi
+	done
+	[ "${nopart}" ] && _exite "Please restart due to some errors"
+fi
+
+########################  EXT SHARED
+
+pth_to_init=/ext/shared
+echo "================ ${pth_to_init}"
+pths="android Archives Class Cnam Mooc Music Soft Videos"
+_echoa ${pths}
+_askno "Give a new list or valid the subdirectories list above to link to ${pth_to_init} or 0 to skip"
+[ "${_ANSWER}" ] && pths=${_ANSWER}
+
+if [ "${_ANSWER}" != 0 ]; then
+	for pth in ${pths}; do
+		pth_from=${pth}
+		pth_to=${pth_to_init}/${pth}
+		echo -n "${pth} "
+		if [ -e ${pth_to} ]; then
+			[ -h ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
+			[ -f ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
+			[ -d ${pth_from} ] && { rmdir ${pth_from} || msg="path is not empty"; }
+			if [ -e ${pth_from} ]; then
+				nopart=exit
+				_echoe "- !!! failed !!! ${msg}"
+			else
+				ln -s ${pth_to} ${pth_from}
+				echo "- ok"
+			fi
+		else
+			nopart=exit
+			_echoe "- *** skipped *** ${pth_to} is missing"
+		fi
+	done
+	[ "${nopart}" ] && _exite "Please restart due to some errors"
+fi
+
+########################  VMS SHARED
+
+pth_to_init=/vms
+echo "================ ${pth_to_init}"
+pths="virt virtualbox vmware"
+_echoa ${pths}
+_askno "Give a new list or valid the subdirectories list above to link to ${pth_to_init} or 0 to skip"
+[ "${_ANSWER}" ] && pths=${_ANSWER}
+
+if [ "${_ANSWER}" != 0 ]; then
+	for pth in ${pths}; do
+		pth_from=${pth}
+		pth_to=${pth_to_init}/${pth}
+		echo -n "${pth} "
+		if [ -e ${pth_to} ]; then
+			[ -h ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
+			[ -f ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
+			[ -d ${pth_from} ] && { rmdir ${pth_from} || msg="path is not empty"; }
+			if [ -e ${pth_from} ]; then
+				nopart=exit
+				_echoe "- !!! failed !!! ${msg}"
+			else
+				ln -s ${pth_to} ${pth_from}
+				echo "- ok"
+			fi
+		else
+			nopart=exit
+			_echoe "- *** skipped *** ${pth_to} is missing"
+		fi
+	done
+	[ "${nopart}" ] && _exite "Please restart due to some errors"
+fi
+
