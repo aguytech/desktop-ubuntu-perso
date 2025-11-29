@@ -1,0 +1,21 @@
+#!/bin/bash
+
+########################  REQUIRED
+
+file_mudita=${_path_base}/perso/conf/Mudita24.desktop
+_require ${file_mudita}
+
+_echot "------- install"
+packages="mudita24"
+${_CMD_INS} ${packages} && _partadd "${packages}" ${_FILE_PCK} \
+	|| { _echoE "Unable to install packages: ${packages}"; return 1; }
+
+_echot "------- launcher"
+_keepmvts ${file_mudita}
+_eval cp -a ${file_mudita} ~/.config/autostart
+
+_echot "------- configuration"
+_echoA "Please adjust volumes and routes and save profile after vaildation."
+_askno "Validate to continue"
+_eval mudita24 -p4
+

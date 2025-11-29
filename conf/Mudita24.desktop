@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Mudita24
+GenericName=ALSA GUI control tool for Envy24 (ice1712) soundcards
+GenericName[fr]=Outil graphique de contrôle ALSA pour les interfaces audio Envy24 (ice1712)
+Icon=mudita24
+Exec=mudita24 -p 4
+#Exec=mudita24
+#StartupNotify=false
+#Terminal=false
+Categories=AudioVideo;Audio;
+Keywords=ALSA;Envy24;ICE1712;Sound Cards;Control;
