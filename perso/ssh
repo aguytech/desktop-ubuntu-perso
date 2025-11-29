@@ -1,0 +1,27 @@
+#!/bin/bash
+
+########################  REQUIRED
+
+_echot "------- required paths"
+pth_xtra=${_path_base}/perso/xtra
+_requirep ${pth_conf}
+
+########################  MAIN
+
+_echot "------- ssh identity"
+_menu "Select the ssh identity to use" none $(cd ${pth_xtra} && ls .ssh*)
+if [ ${_ANSWER} != none ]; then
+	pth=~/.ssh
+	_keepmvts ${pth}
+	tar xzf ${pth_xtra}/${_ANSWER} -C ~/
+fi
+
+_echot "------- ssh git"
+filekey=$(cd ~/.ssh && ls -1 *git*|head -n1)
+file=~/.ssh/config
+echo "Host github
+	HostName github.com
+	User git
+	IdentityFile ~/.ssh/${filekey}
+	IdentitiesOnly yes" >> ${file}
+	
