@@ -28,13 +28,12 @@ file=/root/.sh_functions
 _keepmvts ${file}
 _evalr ln -s ${file_sh_functions} ${file}
 
-_echot "------- common .*hrc"
-for file in /root/.bashrc /root/.zshrc; do
-	_keepcpts ${file}
-	grep -sq '####  PERSO' ${file} || echo "
+_echot "------- common .*rc"
+filetmp=/tmp/tmp.$(date +%s%N)
+echo "
 ########################  PERSO
 
-PS1='\[\033[01;31m\]\u@\h \[\033[1;37m\]\W\[\033[01;31m\]\$\[\033[00m\] '
+PS1='\[\033[01;31m\]\u@\h \[\033[1;37m\]\w\[\033[01;31m\]\$\[\033[00m\] '
 
 # HISTORY
 HISTSIZE=50000
@@ -47,10 +46,15 @@ HISTFILESIZE=50000
 [ -f ~/.sh_aliases ] && . ~/.sh_aliases
 
 # functions
-[ -f ~/.sh_functions ] && . ~/.sh_functions" | sudo tee -a ${file}
+[ -f ~/.sh_functions ] && . ~/.sh_functions" > ${filetmp}
+for file in /root/.bashrc /root/.zshrc; do
+	_keepcpts ${file}
+	grep -sq '####  PERSO' ${file} || _evalr cat ${filetmp} >> ${file}
 done
+_evalr rm ${filetmp}
 
 _echot "------- .zshrc"
+filetmp=/tmp/tmp.$(date +%s%N)
 echo "
 ########################  SET OPTIONS
 
@@ -58,7 +62,10 @@ echo "
 setopt shwordsplit
 # allows interactive comments in console
 setopt interactivecomments
-" | sudo tee -a /root/.zshrc
+" > ${filetmp}
+file=/root/.zshrc
+grep -sq '####  SET OPTIONS' ${file} || _evalr cat ${filetmp} >> ${file}
+_evalr rm ${filetmp}
 
 # force color
 sudo sed -i '/^#force_color_prompt=/ s|#||' /root/.bashrc
@@ -68,3 +75,4 @@ file=/root/.vimrc
 file_from=${_PATH_BS}/conf/.vimrc
 _keepmv ${file}
 _evalr ln -s ${file_from} ${file}
+
