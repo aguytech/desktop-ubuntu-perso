@@ -11,7 +11,7 @@ pth_proj=${HOME}/dev/eclipse-workspaces-${_ECLIPSE_THEME}
 file_desk=${pth_desk}/eclipse_java.desktop
 file_bin=/usr/bin/eclipse_${_ECLIPSE_THEME}
 
-file_desk_conf=${_path_base}/conf/eclipse_${_ECLIPSE_THEME}.desktop
+file_desk_conf=${_path_base}/xtra/eclipse_${_ECLIPSE_THEME}.desktop
 
 _require ${file_desk_conf}
 

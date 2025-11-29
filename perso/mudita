@@ -2,7 +2,7 @@
 
 ########################  REQUIRED
 
-file_mudita=${_path_base}/perso/conf/Mudita24.desktop
+file_mudita=${_path_base}/perso/xtra/Mudita24.desktop
 _require ${file_mudita}
 
 _echot "------- install"
