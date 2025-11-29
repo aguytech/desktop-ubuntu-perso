@@ -52,7 +52,7 @@ file=~/.sh_aliases
 _keepmvts ${file}
 _eval ln -s ${file_sh_aliases} ${file}
 
-_echot "-------  .sh_functions"
+_echot "------- .sh_functions"
 file=~/.sh_functions
 _keepmvts ${file}
 _eval ln -s ${file_sh_functions} ${file}
@@ -63,7 +63,7 @@ _keepmvts ${file}
 _eval ln -s ${file_env_perso} ${file}
 
 for file in ~/.bashrc ~/.zshrc; do
-	_echot "------- ${file} env_perso"
+	_echot "------- ${file##*/} env_perso"
 	grep -q ".sh_env_perso" ${file} || echo "
 # sh_env_perso
 [ -f \${HOME}/.sh_env_perso ] && . \${HOME}/.sh_env_perso" >> ${file}
@@ -85,19 +85,4 @@ for file in .nanorc .tmux.conf .vimrc; do
 	_keepmv "${pth}"
 	_eval ln -s "${_PATH_BS}/conf/${file}" "${pth}"
 done
-
-_echot "------- git config"
-git config --global user.name "aguy tech"
-git config --global user.email aguytech@free.fr
-git config --global core.editor vim
-git config --global merge.tool meld
-
-file=${HOME}/.gitconfig
-grep -q '^[alias]' ${file} || echo -e "
-[alias]
-\tbr = branch
-\tci = commit
-\tco = checkout
-\tdi = diff
-\tst = status" >> ${file}
 
