@@ -1,9 +1,17 @@
 #!/bin/bash
 
+########################  REQUIRED
+
+_echot "------- required paths"
+pth_conf=${_path_base}/perso/conf
+_requirep ${pth_conf}
+
+########################  MAIN
+
 _echot "------- dconf screensave"
 _eval "dconf write /org/gnome/desktop/screensaver/lock-delay 'uint32 3600'"
 
 _echot "------- dconf gnome-terminal"
-_menu "Select the gnome-terminal profiles file to import" none $(cd ${_path_base}/conf/soft && ls gnome-terminal-profiles*)
-[ ${_ANSWER} != none ] && _eval "dconf load /org/gnome/terminal/legacy/profiles:/ < ${_path_base}/conf/soft/${_ANSWER}"
+_menu "Select the gnome-terminal profiles file to import" none $(cd ${pth_conf} && ls gnome-terminal-profiles*)
+[ ${_ANSWER} != none ] && _eval "dconf load /org/gnome/terminal/legacy/profiles:/ < ${pth_conf}/${_ANSWER}"
 
