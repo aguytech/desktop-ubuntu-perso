@@ -11,9 +11,9 @@ pth_proj=${HOME}/dev/eclipse-workspaces-${_ECLIPSE_THEME}
 file_desk=${pth_desk}/eclipse_java.desktop
 file_bin=/usr/bin/eclipse_${_ECLIPSE_THEME}
 
-file_desk_conf=${_path_base}/xtra/eclipse_${_ECLIPSE_THEME}.desktop
+file_desk_xtra=${_path_base}/xtra/eclipse_${_ECLIPSE_THEME}.desktop
 
-_require ${file_desk_conf}
+_require ${file_desk_xtra}
 
 ########################  MAIN
 
@@ -78,7 +78,7 @@ elif [ "${_ECLIPSE_VER}" ]; then
 	_evalr ln -s ${pth_opt}/eclipse ${file_bin}
 
 	_echot "------- launcher"
-	_eval cp ${file_desk_conf} ${file_desk}
+	_eval cp ${file_desk_xtra} ${file_desk}
 	chmod +x ${file_desk}
 
 fi
