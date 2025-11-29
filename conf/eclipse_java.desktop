@@ -28,10 +28,6 @@ Exec=/usr/lib/firefox-developer-edition/firefox %u
 Name=Sublime Text
 Exec=sublime-text
 
-[Desktop Action GEdit]
-Name=GEdit
-Exec=gedit %U
-
 [Desktop Action Ghex]
 Name=Ghex
 Exec=ghex %F
