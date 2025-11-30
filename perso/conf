@@ -86,3 +86,10 @@ for file in .nanorc .tmux.conf .vimrc; do
 	_eval ln -s "${_PATH_BS}/conf/${file}" "${pth}"
 done
 
+
+_echot "------- gtk bookmarks"
+file=~/.config/gtk-3.0/bookmarks
+echo "file:///home
+file:///ext
+file:///home/shared/dev
+file:///home/shared/repo" >> ${file}
