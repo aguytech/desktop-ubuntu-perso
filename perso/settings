@@ -88,11 +88,18 @@ while read key value; do
 	_eval "gsettings set org.gnome.meld ${key} ${value}"
 done <<< "$options"
 
+########################  WM
+
+options="audible-bell false
+titlebar-font 'Ubuntu Sans Bold 11'"
+while read key value; do
+	_eval "gsettings set org.gnome.desktop.wm.preferences ${key} ${value}"
+done <<< "$options"
+
 ########################  GTK
 
-_eval "gsettings set org.gtk.Settings.FileChooser expand-folders false"
+_eval "gsettings set org.gtk.Settings.FileChooser expand-folders true"
 _eval "gsettings set org.gtk.Settings.FileChooser show-hidden true"
 
 ########################  OTHERS
-
 
