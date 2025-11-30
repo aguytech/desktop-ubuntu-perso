@@ -11,6 +11,12 @@ _require ${file_env} ${file_sh_aliases} ${file_sh_functions} ${file_env_perso}
 
 ########################  SYSTEM
 
+_echot "------- iommu"
+ file=/etc/default/grub
+_askyn "Add 'iommu=soft' in GRUB_CMDLINE_LINUX variable ?"
+[ "${_ANSWER}" = y ] && sudo sed -i '/^GRUB_CMDLINE_LINUX="/ s|"$| iommu=soft"|' ${file}"
+_confset _SYSNAME "${_SYSNAME}"
+
 _echot "------- create paths"
 pths="ext/backup ext/ovh ext/shared /home/shared"
 for pth in ${pths}; do
