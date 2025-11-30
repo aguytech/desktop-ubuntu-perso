@@ -11,8 +11,10 @@ ${_CMD_INS} ${packages} && _partadd "${packages}" ${_FILE_PCK} \
 	|| { _echoE "Unable to install packages: ${packages}"; return 1; }
 
 _echot "------- launcher"
-_keepmvts ${file_mudita}
-_eval cp -a ${file_mudita} ~/.config/autostart
+pth=~/.config/autostart
+_keepmvts ${pth}/${file_mudita##*/}
+[ -d ${pth} ] || _eval mkdir ${pth}
+_eval cp -a ${file_mudita} ${pth}
 
 _echot "------- configuration"
 _echoA "Please adjust volumes and routes and save profile after vaildation."
