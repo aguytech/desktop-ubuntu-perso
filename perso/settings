@@ -16,22 +16,7 @@ anstmp=3600
 _askno "Give the screensaver lock-delay inseconds (${anstmp})"
 screen_lock_delay=${_ANSWER:-${anstmp}}
 
-########################  MAIN
-
-_echot "------- dconf gnome-terminal"
-_menu "Select the gnome-terminal profiles file to import" none $(cd ${pth_conf} && ls gnome-terminal-profiles*)
-[ ${_ANSWER} != none ] && _eval "dconf load /org/gnome/terminal/legacy/profiles:/ < ${pth_conf}/${_ANSWER}"
-# dconf dump /org/gnome/terminal/legacy/profiles:/ > ${pth_conf}/${_ANSWER}
-# gsettings get org.gnome.Terminal.ProfilesList list
-# gsettings get org.gnome.Terminal.ProfilesList default
-
-_echot "------- gsettings keyboard"
-options="delay 'uint32 300'
-numlock-state true
-repeat-interval 20"
-while read key value; do
-_eval "gsettings set org.gnome.desktop.peripherals.keyboard ${key} ${value}"
-done <<< "$options"
+########################  DESKTOP
 
 _echot "------- gsettings font-size"
 _eval "gsettings set org.gnome.desktop.interface document-font-name 'Sans ${font_size}'"
@@ -44,6 +29,27 @@ _eval "gsettings set org.gnome.desktop.interface clock-show-weekday true"
 _echot "------- gsettings screensaver"
 _eval "gsettings set org.gnome.desktop.screensaver lock-delay 'uint32 ${screen_lock_delay}'"
 
+########################  TERMINAL
+
+_echot "------- dconf gnome-terminal"
+_menu "Select the gnome-terminal profiles file to import" none $(cd ${pth_conf} && ls gnome-terminal-profiles*)
+[ ${_ANSWER} != none ] && _eval "dconf load /org/gnome/terminal/legacy/profiles:/ < ${pth_conf}/${_ANSWER}"
+# dconf dump /org/gnome/terminal/legacy/profiles:/ > ${pth_conf}/${_ANSWER}
+# gsettings get org.gnome.Terminal.ProfilesList list
+# gsettings get org.gnome.Terminal.ProfilesList default
+
+########################  KEYBOARD
+
+_echot "------- gsettings keyboard"
+options="delay 'uint32 300'
+numlock-state true
+repeat-interval 20"
+while read key value; do
+	_eval "gsettings set org.gnome.desktop.peripherals.keyboard ${key} ${value}"
+done <<< "$options"
+
+########################  DOCK
+
 _echot "------- gsettings dock"
 options="always-center-icons true
 background-opacity 0
@@ -54,4 +60,39 @@ transparency-mode 'FIXED'"
 while read key value; do
 	_eval "gsettings set org.gnome.shell.extensions.dash-to-dock ${key} ${value}"
 done <<< "$options"
+
+########################  NAUTILUS
+
+_eval "gsettings set org.gnome.nautilus.list-view default-zoom-level 'small'"
+_eval "gsettings set org.gnome.nautilus.list-view use-tree-view true"
+
+_eval "org.gnome.nautilus.compression default-compression-format 'tar.xz'"
+
+options="default-folder-viewer 'list-view'
+show-create-link true
+show-delete-permanently true
+show-hidden-files true"
+while read key value; do
+	_eval "gsettings set org.gnome.nautilus.preferences ${key} ${value}"
+done <<< "$options"
+
+########################  MELD
+
+options="highlight-current-line true
+indent-width 4
+prefer-dark-theme true
+show-line-numbers true
+show-overview-map true
+style-scheme 'meld-dark-perso'"
+while read key value; do
+	_eval "gsettings set org.gnome.meld ${key} ${value}"
+done <<< "$options"
+
+########################  GTK
+
+_eval "gsettings set org.gtk.Settings.FileChooser expand-folders false"
+_eval "gsettings set org.gtk.Settings.FileChooser show-hidden true"
+
+########################  OTHERS
+
 
