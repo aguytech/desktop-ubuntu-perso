@@ -3,6 +3,7 @@ default='1d5ff56e-96be-4d97-84c1-99a625d4054e'
 list=['b1dcc9dd-5262-4d8d-a863-c897e6d979b9', '1d5ff56e-96be-4d97-84c1-99a625d4054e']
 
 [:1d5ff56e-96be-4d97-84c1-99a625d4054e]
+audible-bell=false
 background-color='rgb(21,19,17)'
 background-transparency-percent=10
 cursor-background-color='rgb(255,122,0)'
@@ -23,6 +24,7 @@ use-transparent-background=true
 visible-name='nikita'
 
 [:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+audible-bell=false
 background-color='rgb(21,19,17)'
 background-transparency-percent=14
 cursor-background-color='rgb(255,122,0)'
