@@ -18,16 +18,16 @@ screen_lock_delay=${_ANSWER:-${anstmp}}
 
 ########################  DESKTOP
 
-_echot "------- gsettings font-size"
+_echot "------- gsettings desktop"
 _eval "gsettings set org.gnome.desktop.interface document-font-name 'Sans ${font_size}'"
 _eval "gsettings set org.gnome.desktop.interface monospace-font-name 'Monospace ${font_size}'"
 
-_echot "------- gsettings"
 _eval "gsettings set org.gnome.desktop.interface clock-format '24h'"
 _eval "gsettings set org.gnome.desktop.interface clock-show-weekday true"
 
-_echot "------- gsettings screensaver"
 _eval "gsettings set org.gnome.desktop.screensaver lock-delay 'uint32 ${screen_lock_delay}'"
+
+_eval "gsettings set org.gnome.desktop.sound event-sounds false"
 
 ########################  TERMINAL
 
@@ -56,6 +56,7 @@ background-opacity 0
 dock-fixed false
 dock-position 'BOTTOM'
 scroll-action 'cycle-windows'
+show-trash false
 transparency-mode 'FIXED'"
 while read key value; do
 	_eval "gsettings set org.gnome.shell.extensions.dash-to-dock ${key} ${value}"
@@ -103,3 +104,4 @@ _eval "gsettings set org.gtk.Settings.FileChooser show-hidden true"
 
 ########################  OTHERS
 
+_eval "gsettings set org.gnome.mutter center-new-windows true"
