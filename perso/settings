@@ -9,8 +9,12 @@ _requirep ${pth_conf}
 ########################  DATA
 
 anstmp=9
-_askno "Give the size for desktop font (${anstmp})"
+_askno "Give the size for global desktop font (${anstmp})"
 font_size=${_ANSWER:-${anstmp}}
+
+let anstmp=${font_size}+1
+_askno "Give the size for global desktop font (${anstmp})"
+font_interface_size=${_ANSWER:-${anstmp}}
 
 anstmp=3600
 _askno "Give the screensaver lock-delay inseconds (${anstmp})"
@@ -19,6 +23,7 @@ screen_lock_delay=${_ANSWER:-${anstmp}}
 ########################  DESKTOP
 
 _echot "------- gsettings desktop"
+_eval "gsettings set org.gnome.desktop.interface font-name 'Ubuntu Sans ${font_interface_size}'"
 _eval "gsettings set org.gnome.desktop.interface document-font-name 'Sans ${font_size}'"
 _eval "gsettings set org.gnome.desktop.interface monospace-font-name 'Monospace ${font_size}'"
 
@@ -64,10 +69,10 @@ done <<< "$options"
 
 ########################  NAUTILUS
 
+_echot "------- gsettings nautilus"
 _eval "gsettings set org.gnome.nautilus.list-view default-zoom-level 'small'"
 _eval "gsettings set org.gnome.nautilus.list-view use-tree-view true"
-
-_eval "org.gnome.nautilus.compression default-compression-format 'tar.xz'"
+_eval "gsettings set org.gnome.nautilus.compression default-compression-format 'tar.xz'"
 
 options="default-folder-viewer 'list-view'
 show-create-link true
@@ -79,6 +84,7 @@ done <<< "$options"
 
 ########################  MELD
 
+_echot "------- gsettings meld"
 options="highlight-current-line true
 indent-width 4
 prefer-dark-theme true
@@ -91,6 +97,7 @@ done <<< "$options"
 
 ########################  WM
 
+_echot "------- gsettings vim"
 options="audible-bell false
 titlebar-font 'Ubuntu Sans Bold 11'"
 while read key value; do
@@ -99,9 +106,11 @@ done <<< "$options"
 
 ########################  GTK
 
+_echot "------- gsettings gtk"
 _eval "gsettings set org.gtk.Settings.FileChooser expand-folders true"
 _eval "gsettings set org.gtk.Settings.FileChooser show-hidden true"
 
 ########################  OTHERS
 
+_echot "------- gsettings others"
 _eval "gsettings set org.gnome.mutter center-new-windows true"
