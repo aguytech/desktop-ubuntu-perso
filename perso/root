@@ -49,7 +49,7 @@ HISTFILESIZE=50000
 [ -f ~/.sh_functions ] && . ~/.sh_functions" > ${filetmp}
 for file in /root/.bashrc /root/.zshrc; do
 	_keepcpts ${file}
-	grep -sq '####  PERSO' ${file} || _evalr cat ${filetmp} >> ${file}
+	grep -sq '####  PERSO' ${file} || sudo sh -c "cat ${filetmp} >> ${file}"
 done
 _evalr rm ${filetmp}
 
@@ -64,7 +64,7 @@ setopt shwordsplit
 setopt interactivecomments
 " > ${filetmp}
 file=/root/.zshrc
-grep -sq '####  SET OPTIONS' ${file} || _evalr cat ${filetmp} >> ${file}
+grep -sq '####  SET OPTIONS' ${file} || sudo sh -c "cat ${filetmp} >> ${file}"
 _evalr rm ${filetmp}
 
 # force color
@@ -73,6 +73,6 @@ sudo sed -i '/^#force_color_prompt=/ s|#||' /root/.bashrc
 _echot "------- .vimrc"
 file=/root/.vimrc
 file_from=${_PATH_BS}/conf/.vimrc
-_keepmv ${file}
+_keepmvts ${file}
 _evalr ln -s ${file_from} ${file}
 
