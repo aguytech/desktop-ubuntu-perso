@@ -3,9 +3,9 @@
 ########################  REQUIRED
 
 _echot "------- required files"
-file_env=${_path_base}/bs/conf/.sh_env
-file_sh_aliases=${_path_base}/bs/conf/.sh_aliases
-file_sh_functions=${_path_base}/bs/conf/.sh_functions
+file_env=${_PATH_BS}/bs/conf/.sh_env
+file_sh_aliases=${_PATH_BS}/bs/conf/.sh_aliases
+file_sh_functions=${_PATH_BS}/bs/conf/.sh_functions
 file_env_perso=${_path_base}/perso/conf/.sh_env_perso
 _require ${file_env} ${file_sh_aliases} ${file_sh_functions} ${file_env_perso}
 
@@ -14,7 +14,7 @@ _require ${file_env} ${file_sh_aliases} ${file_sh_functions} ${file_env_perso}
 _echot "------- iommu"
  file=/etc/default/grub
 _askyn "Add 'iommu=soft' in GRUB_CMDLINE_LINUX variable ?"
-[ "${_ANSWER}" = y ] && sudo sed -i '/^GRUB_CMDLINE_LINUX="/ s|"$| iommu=soft"|' ${file}"
+[ "${_ANSWER}" = y ] && sudo sed -i '/^GRUB_CMDLINE_LINUX="/ s|"$| iommu=soft"|' ${file}
 _confset _SYSNAME "${_SYSNAME}"
 
 _echot "------- create paths"
@@ -32,7 +32,8 @@ if ! grep -q "${_PATH_BS}" ${file}; then
 	[ -d "${_PATH_BS}" ] && _evalr rm -fR "${_PATH_BS}"
 	[ -d "${_PATH_BS}" ] || _evalr mkdir -p "${_PATH_BS}"
 	_echot "------- ${file} ${_PATH_BS}"
-	sudo sh -c "echo '# bind ${_PATH_BS}
+	sudo sh -c "echo '
+# bind ${_PATH_BS}
 ${pth}				${_PATH_BS}	none	defaults,bind										0 0' >> ${file}"
 	_echot "------- daemon-reload"
 	_evalr systemctl daemon-reload
@@ -66,7 +67,7 @@ _eval ln -s ${file_sh_functions} ${file}
 _echot "------- .sh_env_perso"
 file=${HOME}/.sh_env_perso
 _keepmvts ${file}
-_eval ln -s ${file_env_perso} ${file}
+_eval cp -a ${file_env_perso} ${file}
 
 for file in ~/.bashrc ~/.zshrc; do
 	_echot "------- ${file##*/} env_perso"
