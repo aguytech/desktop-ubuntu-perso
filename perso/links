@@ -103,3 +103,4 @@ if [ "${_ANSWER}" != 0 ]; then
 	[ "${nopart}" ] && _exite "Please restart due to some errors"
 fi
 
+return 0
