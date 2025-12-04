@@ -8,7 +8,7 @@ _requirep ${pth_conf}
 
 ########################  DATA
 
-anstmp=9
+anstmp=8
 _askno "Give the size for global desktop font (${anstmp})"
 font_size=${_ANSWER:-${anstmp}}
 
@@ -20,17 +20,32 @@ anstmp=3600
 _askno "Give the screensaver lock-delay inseconds (${anstmp})"
 screen_lock_delay=${_ANSWER:-${anstmp}}
 
+######################################################### GSETTINGS
+
+_gnome_settings() {
+	while read key value; do
+		_eval "gsettings set $1 ${key} ${value}"
+	done <<< "$2"
+}
+
 ########################  DESKTOP
 
 _echot "------- gsettings desktop"
+pth=org.gnome.desktop.interface
 options="font-name 'Ubuntu Sans ${font_interface_size}'
 document-font-name 'Sans ${font_size}'
 monospace-font-name 'Monospace ${font_size}'
 clock-format '24h'
 clock-show-weekday true"
-while read key value; do
-	_eval "gsettings set org.gnome.desktop.interface ${key} ${value}"
-done <<< "$options"
+_gnome_settings ${pth} "${options}"
+
+########################  KEYBOARD
+
+_echot "------- gsettings desktop.peripherals.keyboard"
+options="delay 'uint32 300'
+numlock-state true
+repeat-interval 'uint32 50'"
+_gnome_settings ${pth} "${options}"
 
 # screensaver
 _eval "gsettings set org.gnome.desktop.screensaver lock-delay 'uint32 ${screen_lock_delay}'"
@@ -46,19 +61,10 @@ _menu "Select the gnome-terminal profiles file to import" none $(cd ${pth_conf} 
 # gsettings get org.gnome.Terminal.ProfilesList list
 # gsettings get org.gnome.Terminal.ProfilesList default
 
-########################  KEYBOARD
-
-_echot "------- gsettings keyboard"
-options="delay 'uint32 300'
-numlock-state true
-repeat-interval 20"
-while read key value; do
-	_eval "gsettings set org.gnome.desktop.peripherals.keyboard ${key} ${value}"
-done <<< "$options"
-
 ########################  DOCK
 
 _echot "------- gsettings dock"
+pth=org.gnome.shell.extensions.dash-to-dock
 options="always-center-icons true
 background-opacity 0
 dock-fixed false
@@ -66,28 +72,28 @@ dock-position 'BOTTOM'
 scroll-action 'cycle-windows'
 show-trash false
 transparency-mode 'FIXED'"
-while read key value; do
-	_eval "gsettings set org.gnome.shell.extensions.dash-to-dock ${key} ${value}"
-done <<< "$options"
+_gnome_settings ${pth} "${options}"
 
 ########################  NAUTILUS
 
 _echot "------- gsettings nautilus"
-_eval "gsettings set org.gnome.nautilus.list-view default-zoom-level 'small'"
-_eval "gsettings set org.gnome.nautilus.list-view use-tree-view true"
-_eval "gsettings set org.gnome.nautilus.compression default-compression-format 'tar.xz'"
+pth=org.gnome.nautilus.preferences
+options="default-zoom-level 'small'
+use-tree-view true
+default-compression-format 'tar.xz'"
+_gnome_settings ${pth} "${options}"
 
+pth=org.gnome.nautilus.preferences
 options="default-folder-viewer 'list-view'
 show-create-link true
 show-delete-permanently true
 show-hidden-files true"
-while read key value; do
-	_eval "gsettings set org.gnome.nautilus.preferences ${key} ${value}"
-done <<< "$options"
+_gnome_settings ${pth} "${options}"
 
 ########################  MELD
 
 _echot "------- gsettings meld"
+pth=org.gnome.meld
 options="custom-font 'monospace, ${font_size}'
 highlight-current-line true
 indent-width 4
@@ -96,27 +102,26 @@ show-line-numbers true
 show-overview-map true
 style-scheme 'meld-dark-perso'
 use-system-font true"
-while read key value; do
-	_eval "gsettings set org.gnome.meld ${key} ${value}"
-done <<< "$options"
+_gnome_settings ${pth} "${options}"
 
 ########################  WM
 
 _echot "------- gsettings vim"
+pth=org.gnome.desktop.wm.preferences
 options="audible-bell false
 titlebar-font 'Ubuntu Sans Bold 10'
 visual-bell false"
-while read key value; do
-	_eval "gsettings set org.gnome.desktop.wm.preferences ${key} ${value}"
-done <<< "$options"
+_gnome_settings ${pth} "${options}"
+
+########################  GTK
+
+_echot "------- gsettings gtk"
+pth=org.gtk.Settings.FileChooser
+options="expand-folders true
+show-hidden true"
+_gnome_settings ${pth} "${options}"
 
 ########################  MUTTER
 
 _echot "------- gsettings others"
 _eval "gsettings set org.gnome.mutter center-new-windows true"
-
-########################  GTK
-
-_echot "------- gsettings gtk"
-_eval "gsettings set org.gtk.Settings.FileChooser expand-folders true"
-_eval "gsettings set org.gtk.Settings.FileChooser show-hidden true"
