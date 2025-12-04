@@ -9,6 +9,10 @@ file_sh_functions=${_PATH_BS}/bs/conf/.sh_functions
 file_env_perso=${_path_base}/perso/conf/.sh_env_perso
 _require ${file_env} ${file_sh_aliases} ${file_sh_functions} ${file_env_perso}
 
+_echot "------- required paths"
+pth_shared_bs=/home/shared/repo/bs
+_requirep ${pth_shared_bs}
+
 ########################  SYSTEM
 
 _echot "------- iommu"
@@ -27,19 +31,17 @@ done
 file=/etc/fstab
 if ! grep -q "${_PATH_BS}" ${file}; then
 	_echot "------- path ${_PATH_BS}"
-	pth=/home/shared/repo/bs
-	[ -d ${pth} ] || _exite "Unable to find path: '${pth}'"
 	[ -d "${_PATH_BS}" ] && _evalr rm -fR "${_PATH_BS}"
 	[ -d "${_PATH_BS}" ] || _evalr mkdir -p "${_PATH_BS}"
 	_echot "------- ${file} ${_PATH_BS}"
 	sudo sh -c "echo '
 # bind ${_PATH_BS}
-${pth}				${_PATH_BS}	none	defaults,bind										0 0' >> ${file}"
+${pth_shared_bs}				${_PATH_BS}	none	defaults,bind										0 0' >> ${file}"
 	_echot "------- daemon-reload"
 	_evalr systemctl daemon-reload
 	_echot "------- bind ${_PATH_BS}"
 	_evalr mount ${_PATH_BS}
-	[ -d ${_PATH_BS} ] || _exite "Unable to find path: '${pth}'"
+	[ -d ${_PATH_BS} ] || _exite "Unable to mount path: '${_PATH_BS}'"
 fi
 
 _echot "------- reduce swappiness"
