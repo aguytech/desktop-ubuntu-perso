@@ -23,15 +23,18 @@ screen_lock_delay=${_ANSWER:-${anstmp}}
 ########################  DESKTOP
 
 _echot "------- gsettings desktop"
-_eval "gsettings set org.gnome.desktop.interface font-name 'Ubuntu Sans ${font_interface_size}'"
-_eval "gsettings set org.gnome.desktop.interface document-font-name 'Sans ${font_size}'"
-_eval "gsettings set org.gnome.desktop.interface monospace-font-name 'Monospace ${font_size}'"
+options="font-name 'Ubuntu Sans ${font_interface_size}'
+document-font-name 'Sans ${font_size}'
+monospace-font-name 'Monospace ${font_size}'
+clock-format '24h'
+clock-show-weekday true"
+while read key value; do
+	_eval "gsettings set org.gnome.desktop.interface ${key} ${value}"
+done <<< "$options"
 
-_eval "gsettings set org.gnome.desktop.interface clock-format '24h'"
-_eval "gsettings set org.gnome.desktop.interface clock-show-weekday true"
-
+# screensaver
 _eval "gsettings set org.gnome.desktop.screensaver lock-delay 'uint32 ${screen_lock_delay}'"
-
+# sound
 _eval "gsettings set org.gnome.desktop.sound event-sounds false"
 
 ########################  TERMINAL
@@ -85,12 +88,14 @@ done <<< "$options"
 ########################  MELD
 
 _echot "------- gsettings meld"
-options="highlight-current-line true
+options="custom-font 'monospace, ${font_size}'
+highlight-current-line true
 indent-width 4
 prefer-dark-theme true
 show-line-numbers true
 show-overview-map true
-style-scheme 'meld-dark-perso'"
+style-scheme 'meld-dark-perso'
+use-system-font true"
 while read key value; do
 	_eval "gsettings set org.gnome.meld ${key} ${value}"
 done <<< "$options"
@@ -99,18 +104,19 @@ done <<< "$options"
 
 _echot "------- gsettings vim"
 options="audible-bell false
-titlebar-font 'Ubuntu Sans Bold 11'"
+titlebar-font 'Ubuntu Sans Bold 10'
+visual-bell false"
 while read key value; do
 	_eval "gsettings set org.gnome.desktop.wm.preferences ${key} ${value}"
 done <<< "$options"
+
+########################  MUTTER
+
+_echot "------- gsettings others"
+_eval "gsettings set org.gnome.mutter center-new-windows true"
 
 ########################  GTK
 
 _echot "------- gsettings gtk"
 _eval "gsettings set org.gtk.Settings.FileChooser expand-folders true"
 _eval "gsettings set org.gtk.Settings.FileChooser show-hidden true"
-
-########################  OTHERS
-
-_echot "------- gsettings others"
-_eval "gsettings set org.gnome.mutter center-new-windows true"
