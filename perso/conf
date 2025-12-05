@@ -3,9 +3,9 @@
 ########################  REQUIRED
 
 _echot "------- required files"
-file_env=${_PATH_BS}/bs/conf/.sh_env
-file_sh_aliases=${_PATH_BS}/bs/conf/.sh_aliases
-file_sh_functions=${_PATH_BS}/bs/conf/.sh_functions
+file_env=${_PATH_BS}/conf/.sh_env
+file_sh_aliases=${_PATH_BS}/conf/.sh_aliases
+file_sh_functions=${_PATH_BS}/conf/.sh_functions
 file_env_perso=${_path_base}/perso/conf/.sh_env_perso
 _require ${file_env} ${file_sh_aliases} ${file_sh_functions} ${file_env_perso}
 
@@ -94,7 +94,6 @@ for file in .nanorc .tmux.conf .vimrc; do
 	_keepmvts "${pth}"
 	_eval ln -s "${_PATH_BS}/conf/${file}" "${pth}"
 done
-
 
 _echot "------- gtk bookmarks"
 file=~/.config/gtk-3.0/bookmarks
