@@ -70,6 +70,7 @@ background-opacity 0
 dock-fixed false
 dock-position 'BOTTOM'
 scroll-action 'cycle-windows'
+show-show-apps-button false
 show-trash false
 transparency-mode 'FIXED'"
 _gnome_settings ${pth} "${options}"
