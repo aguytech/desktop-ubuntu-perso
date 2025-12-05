@@ -63,7 +63,7 @@ _echot "------- apt ugrade"
 _evalr apt upgrade -y
 
 _echot "------- firefox install"
-${_CMD_INS} firefox
+_install_pcks firefox
 
 _echot "------- firefox profile"
 _echoA "Choose the right path to create a profile & close application"

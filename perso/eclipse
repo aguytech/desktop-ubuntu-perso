@@ -93,7 +93,7 @@ sed -i "/^-Dosgi.instance.area.default/ s|=.*|=${pth_proj}/init|" ${file}
 #sed -i "/^-Dosgi.instance.area.default/ s|=.*|=${pth_proj}/eclipse-workspaces-${_ECLIPSE_THEME}|" ${file}
 
 _echot "------- jdk src doc"
-_CMD_INS openjdk-21-source openjdk-21-doc
+_install_pcks openjdk-21-source openjdk-21-doc
 
 _echoT "#################### END ${_PARTDEV}"
 

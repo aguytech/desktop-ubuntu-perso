@@ -91,7 +91,7 @@ setopt interactivecomments
 _echot "------- user links"
 for file in .nanorc .tmux.conf .vimrc; do
 	pth=${HOME}/${file}
-	_keepmv "${pth}"
+	_keepmvts "${pth}"
 	_eval ln -s "${_PATH_BS}/conf/${file}" "${pth}"
 done
 
