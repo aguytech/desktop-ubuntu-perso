@@ -3,13 +3,20 @@
 # xprop WM_CLASS
 ########################  MAIN
 
+pth=~/.local/share/applications
+[ -d "${pth}" ] || mkdir -p ${pth}
+
 _echot "------- nautilus"
-name=org.gnome.Nautilus; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
-_eval cp -n /usr/share/applications/${name}.desktop ${path}
-if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
-	menuadd="NautilusNode1;NautilusComputer;NautilusNetwork;Separator;Terminal;SshcDev;Sshc;SshcLxd"
-	sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${path}/${name}.desktop
-	echo "
+name=org.gnome.Nautilus
+file=/usr/share/applications/${name}.desktop
+if [ -f ${file} ]; then
+	_eval cp --update=all ${file} ${pth}
+	if ! grep -q '\[Desktop Action Separator\]' ${pth}/${name}.desktop; then
+		menuadd="NautilusNode1;NautilusComputer;NautilusNetwork;Separator;Terminal;SshcDev;Sshc;SshcLxd"
+		grep -q '^Actions=' ${pth}/${name}.desktop \
+			&& sed -i "s|^\(Actions=.*\)$|\1${menuadd}|" ${pth}/${name}.desktop \
+			|| echo "Actions=${menuadd}" >> ${pth}/${name}.desktop
+		echo "
 [Desktop Action Separator]
 Name=−−−−−−−−−−
 Exec=
@@ -41,59 +48,24 @@ Exec=gnome-terminal -e ssh-server
 [Desktop Action SshcLxd]
 Name=sshca
 Exec=gnome-terminal -e /home/shared/repo/bs/ssh-lxd
-" >> ${path}/${name}.desktop
-	sed -i 's|^\(DBusActivatable.*\)|#\1|' ${path}/${name}.desktop
-fi
-
-_echot "------- gedit"
-name=org.gnome.gedit; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
-_eval cp -n /usr/share/applications/${name}.desktop ${path}
-if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
-	menuadd="Meld;GHex;Separator;Terminal;SshcDev;Sshc;SshcLxd"
-	sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${path}/${name}.desktop
-	echo "
-[Desktop Action Separator]
-Name=−−−−−−−−−−
-Exec=
-
-[Desktop Action Meld]
-Name=Meld
-Exec=meld
-
-[Desktop Action GHex]
-Name=GHex
-Exec=ghex
-
-[Desktop Action SnapperGui]
-Name=Snapper GUI
-Exec=gksudo snapper-gui
-
-[Desktop Action Terminal]
-Name=Terminal
-Exec=gnome-terminal
-
-[Desktop Action SshcDev]
-Name=sshc dev
-Exec=gnome-terminal --tab --tab-with-profile node1
-
-[Desktop Action Sshc]
-Name=sshc
-Exec=gnome-terminal -e ssh-server
-
-[Desktop Action SshcLxd]
-Name=sshcl
-Exec=gnome-terminal -e ssh-lxd
-" >> ${path}/${name}.desktop
-	sed -i 's|^\(DBusActivatable.*\)|#\1|' ${path}/${name}.desktop
+" >> ${pth}/${name}.desktop
+	fi
+else
+	_echoe "${name} are skipped"
+	_echoe "${file} file not found"
 fi
 
 _echot "------- org.gnome.Terminal"
-name=org.gnome.Terminal; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
-_eval cp -n /usr/share/applications/${name}.desktop ${path}
-if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
-	menuadd=";Separator;SshcDev;Sshc;SshcLxd;Separator;Nautilus;NautilusComputer;NautilusNetwork;"
-	sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${path}/${name}.desktop
-	echo "
+name=org.gnome.Terminal
+file=/usr/share/applications/${name}.desktop
+if [ -f ${file} ]; then
+	_eval cp --update=all ${file} ${pth}
+	if ! grep -q '\[Desktop Action Separator\]' ${pth}/${name}.desktop; then
+		menuadd=";Separator;SshcDev;Sshc;SshcLxd;Separator;Nautilus;NautilusComputer;NautilusNetwork;"
+			grep -q '^Actions=' ${pth}/${name}.desktop \
+				&& sed -i "s|^\(Actions=.*\)$|\1${menuadd}|" ${pth}/${name}.desktop \
+				|| echo "Actions=${menuadd}" >> ${pth}/${name}.desktop
+		echo "
 [Desktop Action Separator]
 Name=−−−−−−−−−−
 Exec=
@@ -121,99 +93,22 @@ Exec=nautilus --new-window computer:///
 [Desktop Action NautilusNetwork]
 Name=Nautilus Network
 Exec=nautilus --new-window network:///
-" >> ${path}/${name}.desktop
-fi
-
-_echot "------- firefox"
-name=firefox; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
-_eval cp -n /usr/share/applications/${name}.desktop ${path}
-#sed -i "s|^\(Exec=\).*|\1firefox -P ${USER}|" ${path}/${name}.desktop
-if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
-	menuadd="Separator;ProfileUser;ProfileManager;SafeMode;Separator;FirefoxDev;Chromium;Separator;Qarte;aMule;"
-	sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${path}/${name}.desktop
-	echo "
-[Desktop Action Separator]
-Name=−−−−−−−−−−
-Exec=
-
-[Desktop Action ProfileUser]
-Name=Profile ubuntu
-Exec=firefox -P ubuntu
-
-[Desktop Action SafeMode]
-Name=Safe Mode
-Exec=firefox --safe-mode
-
-[Desktop Action ProfileManager]
-Name=Profile Manager
-Exec=firefox --ProfileManager
-
-[Desktop Action Thunderbird]
-Name=Thunderbird
-Exec=thunderbird
-
-[Desktop Action FirefoxDev]
-Name=Firefox Developper Edition
-Exec=firefox-dev -P ubuntu-dev
-
-[Desktop Action Chromium]
-Name=Chromium browser
-Exec=chromium-browser
-
-[Desktop Action Qarte]
-Name=Qarte
-Exec=qarte
-
-[Desktop Action aMule]
-Name=aMule
-Exec=amule
-
-[Desktop Action Skype]
-Name=Skype
-Exec=skype %U
-
-[Desktop Action Pidgin]
-Name=Pidgin
-Exec=pidgin
-" >> ${path}/${name}.desktop
-fi
-
-_echot "------- thunderbird"
-name=thunderbird; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
-_eval cp -n /usr/share/applications/${name}.desktop ${path}
-if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
-	menuadd="Separator;Addressbook;ProfileManager;ProfileExtend;"
-	sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${path}/${name}.desktop
-	echo "
-[Desktop Action Separator]
-Name=−−−−−−−−−−
-Exec=
-
-[Desktop Action Addressbook]
-Name=Addressbook
-Exec=thunderbird -addressbook
-
-[Desktop Action ProfileManager]
-Name=Profile Manager
-Exec=thunderbird --ProfileManager
-
-[Desktop Action ProfileExtend]
-Name=Profile  Extend
-Exec=thunderbird -P extend
-
-[Desktop Action Compose]
-Name=Compose
-Exec=thunderbird -compose
-" >> ${path}/${name}.desktop
+" >> ${pth}/${name}.desktop
+	fi
+else
+	_echoe "${name} are skipped"
+	_echoe "${file} file not found"
 fi
 
 _echot "------- org.gnome.Totem"
-name=org.gnome.Totem; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
-_eval cp -n /usr/share/applications/${name}.desktop ${path}
-if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
-	menuadd="Separator;HandBrake;Brasero;MKVtoolnix;GnomeSubtitles;KDEnlive;Separator;Mpv;"
-	sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${path}/${name}.desktop
-	echo "
+name=org.gnome.Totem
+file=/usr/share/applications/${name}.desktop
+if [ -f ${file} ]; then
+	_eval cp --update=all ${file} ${pth}
+	if ! grep -q '\[Desktop Action Separator\]' ${pth}/${name}.desktop; then
+		menuadd="Separator;HandBrake;Brasero;MKVtoolnix;GnomeSubtitles;KDEnlive;Separator;Mpv;"
+		sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${pth}/${name}.desktop
+		echo "
 [Desktop Action Separator]
 Name=−−−−−−−−−−
 Exec=
@@ -241,14 +136,20 @@ Exec=ghb
 [Desktop Action Mpv]
 Name=Mpv media player
 Exec=mpv --player-operation-mode=pseudo-gui
-" >> ${path}/${name}.desktop
+" >> ${pth}/${name}.desktop
+	fi
+else
+	_echoe "${name} are skipped"
+	_echoe "${file} file not found"
 fi
 
 _echot "------- mpv"
-name=mpv; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
-_eval cp -n /usr/share/applications/${name}.desktop ${path}
-if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
-	echo "Actions=Separator;HandBrake;Brasero;MKVtoolnix;GnomeSubtitles;KDEnlive;Separator;Totem;
+name=mpv
+file=/usr/share/applications/${name}.desktop
+if [ -f ${file} ]; then
+	_eval cp --update=all ${file} ${pth}
+	if ! grep -q '\[Desktop Action Separator\]' ${pth}/${name}.desktop; then
+		echo "Actions=Separator;HandBrake;Brasero;MKVtoolnix;GnomeSubtitles;KDEnlive;Separator;Totem;
 
 [Desktop Action Separator]
 Name=−−−−−−−−−−
@@ -277,16 +178,22 @@ Exec=ghb
 [Desktop Action Totem]
 Name=Totem media player
 Exec=totem
-" >> ${path}/${name}.desktop
+" >> ${pth}/${name}.desktop
+	fi
+else
+	_echoe "${name} are skipped"
+	_echoe "${file} file not found"
 fi
 
 _echot "------- gmusicbrowser"
-name=gmusicbrowser; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
-_eval cp -n /usr/share/applications/${name}.desktop ${path}
-if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
-	menuadd="Separator;Lollypop;PulseaudioEqualizer;Separator;Audacity;Easytag;SoundJuicer;SoundConverter;"
-	sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${path}/${name}.desktop
-	echo "
+name=gmusicbrowser
+file=/usr/share/applications/${name}.desktop
+if [ -f ${file} ]; then
+	_eval cp --update=all ${file} ${pth}
+	if ! grep -q '\[Desktop Action Separator\]' ${pth}/${name}.desktop; then
+		menuadd="Separator;Lollypop;PulseaudioEqualizer;Separator;Audacity;Easytag;SoundJuicer;SoundConverter;"
+		sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${pth}/${name}.desktop
+		echo "
 [Desktop Action Separator]
 Name=−−−−−−−−−−
 Exec=
@@ -314,14 +221,20 @@ Exec=soundconverter %U
 [Desktop Action PulseaudioEqualizer]
 Name=Pulseaudio Equalizer
 Exec=qpaeq
-" >> ${path}/${name}.desktop
+" >> ${pth}/${name}.desktop
+	fi
+else
+	_echoe "${name} are skipped"
+	_echoe "${file} file not found"
 fi
 
 _echot "------- gimp"
-name=gimp; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
-_eval cp -n /usr/share/applications/${name}.desktop ${path}
-if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
-	echo "Actions=gThumb;Inkscape;Separator;SimpleScan;XSane;
+name=gimp
+file=/usr/share/applications/${name}.desktop
+if [ -f ${file} ]; then
+	_eval cp --update=all ${file} ${pth}
+	if ! grep -q '\[Desktop Action Separator\]' ${pth}/${name}.desktop; then
+		echo "Actions=gThumb;Inkscape;Separator;SimpleScan;XSane;
 
 [Desktop Action Separator]
 Name=−−−−−−−−−−
@@ -342,16 +255,22 @@ Exec=simple-scan
 [Desktop Action XSane]
 Name=XSane Image scanning program
 Exec=xsane
-" >> ${path}/${name}.desktop
+" >> ${pth}/${name}.desktop
+	fi
+else
+	_echoe "${name} are skipped"
+	_echoe "${file} file not found"
 fi
 
 _echot "------- libreoffice-startcenter"
-name=libreoffice-startcenter; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
-_eval cp -n /usr/share/applications/${name}.desktop ${path}
-if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
-	menuadd="Separator;Gcolor3;Calculator;Stopwatch;Activity;"
-	sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${path}/${name}.desktop
-	echo "
+name=libreoffice-startcenter
+file=/usr/share/applications/${name}.desktop
+if [ -f ${file} ]; then
+	_eval cp --update=all ${file} ${pth}
+	if ! grep -q '\[Desktop Action Separator\]' ${pth}/${name}.desktop; then
+		menuadd="Separator;Gcolor3;Calculator;Stopwatch;Activity;"
+		sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${pth}/${name}.desktop
+		echo "
 [Desktop Action Separator]
 Name=−−−−−−−−−−
 Exec=
@@ -371,14 +290,20 @@ Exec=/usr/bin/stopwatch
 [Desktop Action Gcolor3]
 Name=Color Picker
 Exec=gcolor3
-" >> ${path}/${name}.desktop
+" >> ${pth}/${name}.desktop
+	fi
+else
+	_echoe "${name} are skipped"
+	_echoe "${file} file not found"
 fi
 
 _echot "------- gnome-tweak-tool"
-name=org.gnome.tweaks; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
-_eval cp -n /usr/share/applications/${name}.desktop ${path}
-if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
-	echo "Actions=Separator;SoftwareUpdates;SoftwareSources;Separator;Gparted;DiskUtility;DiskUsage;Sysinfo;Separator;
+name=org.gnome.tweaks
+file=/usr/share/applications/${name}.desktop
+if [ -f ${file} ]; then
+	_eval cp --update=all ${file} ${pth}
+	if ! grep -q '\[Desktop Action Separator\]' ${pth}/${name}.desktop; then
+		echo "Actions=Separator;SoftwareUpdates;SoftwareSources;Separator;Gparted;DiskUtility;DiskUsage;Sysinfo;Separator;
 
 [Desktop Action Separator]
 Name=−−−−−−−−−−
@@ -411,5 +336,9 @@ Exec=gksudo gparted
 [Desktop Action Sysinfo]
 Name=Sysinfo
 Exec=sysinfo
-" >> ${path}/${name}.desktop
+" >> ${pth}/${name}.desktop
+	fi
+else
+	_echoe "${name} are skipped"
+	_echoe "${file} file not found"
 fi
