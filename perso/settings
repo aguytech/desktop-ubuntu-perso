@@ -41,7 +41,8 @@ _gnome_settings ${pth} "${options}"
 
 ########################  KEYBOARD
 
-_echot "------- gsettings desktop.peripherals.keyboard"
+_echot "------- gsettings org.gnome.desktop.peripherals.keyboard"
+pth=org.gnome.desktop.peripherals.keyboard
 options="delay 'uint32 300'
 numlock-state true
 repeat-interval 'uint32 50'"
