@@ -79,16 +79,19 @@ _gnome_settings ${pth} "${options}"
 
 _echot "------- gsettings nautilus"
 pth=org.gnome.nautilus.preferences
-options="default-zoom-level 'small'
-use-tree-view true
-default-compression-format 'tar.xz'"
-_gnome_settings ${pth} "${options}"
-
-pth=org.gnome.nautilus.preferences
 options="default-folder-viewer 'list-view'
 show-create-link true
 show-delete-permanently true
 show-hidden-files true"
+_gnome_settings ${pth} "${options}"
+
+pth=org.gnome.nautilus.list-view
+options="default-zoom-level 'small'
+use-tree-view true"
+_gnome_settings ${pth} "${options}"
+
+pth=org.gnome.nautilus.compression
+options="default-compression-format 'tar.xz'"
 _gnome_settings ${pth} "${options}"
 
 ########################  MELD
