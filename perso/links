@@ -35,6 +35,7 @@ if [ "${_ANSWER}" != 0 ]; then
 				_echoe "- *** skipped *** ${pth_to} is missing"
 			fi
 		done
+		[ -n "${errors}" ] && _askno "Correct problem(s) and validate to continue"
 	done
 fi
 
@@ -70,6 +71,7 @@ if [ "${_ANSWER}" != 0 ]; then
 				_echoe "- *** skipped *** ${pth_to} is missing"
 			fi
 		done
+		[ -n "${errors}" ] && _askno "Correct problem(s) and validate to continue"
 	done
 fi
 
@@ -105,6 +107,7 @@ if [ "${_ANSWER}" != 0 ]; then
 				_echoe "- *** skipped *** ${pth_to} is missing"
 			fi
 		done
+		[ -n "${errors}" ] && _askno "Correct problem(s) and validate to continue"
 	done
 fi
 
