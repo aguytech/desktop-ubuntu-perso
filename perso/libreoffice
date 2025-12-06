@@ -4,4 +4,3 @@ _echot "------- language fr"
 packages="hunspell-fr hunspell-fr-classical hyphen-fr mythes-fr tesseract-ocr-fra"
 packages+=" libreoffice-l10n-fr"
 _install_pcks ${packages}
-
