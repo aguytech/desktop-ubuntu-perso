@@ -1,0 +1,415 @@
+#!/bin/bash
+
+# xprop WM_CLASS
+########################  MAIN
+
+_echot "------- nautilus"
+name=org.gnome.Nautilus; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
+_eval cp -n /usr/share/applications/${name}.desktop ${path}
+if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
+	menuadd="NautilusNode1;NautilusComputer;NautilusNetwork;Separator;Terminal;SshcDev;Sshc;SshcLxd"
+	sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${path}/${name}.desktop
+	echo "
+[Desktop Action Separator]
+Name=−−−−−−−−−−
+Exec=
+
+[Desktop Action NautilusNode1]
+Name=Nautilus node1
+Exec=nautilus --new-window sftp://root@node1/usr/local/bs
+
+[Desktop Action NautilusComputer]
+Name=Nautilus Computer
+Exec=nautilus --new-window computer:///
+
+[Desktop Action NautilusNetwork]
+Name=Nautilus Network
+Exec=nautilus --new-window network:///
+
+[Desktop Action Terminal]
+Name=Terminal
+Exec=gnome-terminal
+
+[Desktop Action SshcDev]
+Name=sshc dev
+Exec=gnome-terminal --tab --tab-with-profile node1
+
+[Desktop Action Sshc]
+Name=sshc
+Exec=gnome-terminal -e ssh-server
+
+[Desktop Action SshcLxd]
+Name=sshca
+Exec=gnome-terminal -e /home/shared/repo/bs/ssh-lxd
+" >> ${path}/${name}.desktop
+	sed -i 's|^\(DBusActivatable.*\)|#\1|' ${path}/${name}.desktop
+fi
+
+_echot "------- gedit"
+name=org.gnome.gedit; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
+_eval cp -n /usr/share/applications/${name}.desktop ${path}
+if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
+	menuadd="Meld;GHex;Separator;Terminal;SshcDev;Sshc;SshcLxd"
+	sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${path}/${name}.desktop
+	echo "
+[Desktop Action Separator]
+Name=−−−−−−−−−−
+Exec=
+
+[Desktop Action Meld]
+Name=Meld
+Exec=meld
+
+[Desktop Action GHex]
+Name=GHex
+Exec=ghex
+
+[Desktop Action SnapperGui]
+Name=Snapper GUI
+Exec=gksudo snapper-gui
+
+[Desktop Action Terminal]
+Name=Terminal
+Exec=gnome-terminal
+
+[Desktop Action SshcDev]
+Name=sshc dev
+Exec=gnome-terminal --tab --tab-with-profile node1
+
+[Desktop Action Sshc]
+Name=sshc
+Exec=gnome-terminal -e ssh-server
+
+[Desktop Action SshcLxd]
+Name=sshcl
+Exec=gnome-terminal -e ssh-lxd
+" >> ${path}/${name}.desktop
+	sed -i 's|^\(DBusActivatable.*\)|#\1|' ${path}/${name}.desktop
+fi
+
+_echot "------- org.gnome.Terminal"
+name=org.gnome.Terminal; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
+_eval cp -n /usr/share/applications/${name}.desktop ${path}
+if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
+	menuadd=";Separator;SshcDev;Sshc;SshcLxd;Separator;Nautilus;NautilusComputer;NautilusNetwork;"
+	sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${path}/${name}.desktop
+	echo "
+[Desktop Action Separator]
+Name=−−−−−−−−−−
+Exec=
+
+[Desktop Action Sshc]
+Name=sshc
+Exec=gnome-terminal -e ssh-server
+
+[Desktop Action SshcDev]
+Name=sshc dev
+Exec=gnome-terminal --tab --tab-with-profile node1
+
+[Desktop Action SshcLxd]
+Name=sshca
+Exec=gnome-terminal -e /home/shared/repo/bs/ssh-lxd
+
+[Desktop Action Nautilus]
+Name=Nautilus
+Exec=nautilus --new-window
+
+[Desktop Action NautilusComputer]
+Name=Nautilus Computer
+Exec=nautilus --new-window computer:///
+
+[Desktop Action NautilusNetwork]
+Name=Nautilus Network
+Exec=nautilus --new-window network:///
+" >> ${path}/${name}.desktop
+fi
+
+_echot "------- firefox"
+name=firefox; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
+_eval cp -n /usr/share/applications/${name}.desktop ${path}
+#sed -i "s|^\(Exec=\).*|\1firefox -P ${USER}|" ${path}/${name}.desktop
+if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
+	menuadd="Separator;ProfileUser;ProfileManager;SafeMode;Separator;FirefoxDev;Chromium;Separator;Qarte;aMule;"
+	sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${path}/${name}.desktop
+	echo "
+[Desktop Action Separator]
+Name=−−−−−−−−−−
+Exec=
+
+[Desktop Action ProfileUser]
+Name=Profile ubuntu
+Exec=firefox -P ubuntu
+
+[Desktop Action SafeMode]
+Name=Safe Mode
+Exec=firefox --safe-mode
+
+[Desktop Action ProfileManager]
+Name=Profile Manager
+Exec=firefox --ProfileManager
+
+[Desktop Action Thunderbird]
+Name=Thunderbird
+Exec=thunderbird
+
+[Desktop Action FirefoxDev]
+Name=Firefox Developper Edition
+Exec=firefox-dev -P ubuntu-dev
+
+[Desktop Action Chromium]
+Name=Chromium browser
+Exec=chromium-browser
+
+[Desktop Action Qarte]
+Name=Qarte
+Exec=qarte
+
+[Desktop Action aMule]
+Name=aMule
+Exec=amule
+
+[Desktop Action Skype]
+Name=Skype
+Exec=skype %U
+
+[Desktop Action Pidgin]
+Name=Pidgin
+Exec=pidgin
+" >> ${path}/${name}.desktop
+fi
+
+_echot "------- thunderbird"
+name=thunderbird; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
+_eval cp -n /usr/share/applications/${name}.desktop ${path}
+if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
+	menuadd="Separator;Addressbook;ProfileManager;ProfileExtend;"
+	sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${path}/${name}.desktop
+	echo "
+[Desktop Action Separator]
+Name=−−−−−−−−−−
+Exec=
+
+[Desktop Action Addressbook]
+Name=Addressbook
+Exec=thunderbird -addressbook
+
+[Desktop Action ProfileManager]
+Name=Profile Manager
+Exec=thunderbird --ProfileManager
+
+[Desktop Action ProfileExtend]
+Name=Profile  Extend
+Exec=thunderbird -P extend
+
+[Desktop Action Compose]
+Name=Compose
+Exec=thunderbird -compose
+" >> ${path}/${name}.desktop
+fi
+
+_echot "------- org.gnome.Totem"
+name=org.gnome.Totem; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
+_eval cp -n /usr/share/applications/${name}.desktop ${path}
+if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
+	menuadd="Separator;HandBrake;Brasero;MKVtoolnix;GnomeSubtitles;KDEnlive;Separator;Mpv;"
+	sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${path}/${name}.desktop
+	echo "
+[Desktop Action Separator]
+Name=−−−−−−−−−−
+Exec=
+
+[Desktop Action Brasero]
+Name=Brasero
+Exec=brasero
+
+[Desktop Action MKVtoolnix]
+Name=MKVtoolnix GUI
+Exec=mkvtoolnix-gui
+
+[Desktop Action GnomeSubtitles]
+Name=Gnome Subtitles
+Exec=gnome-subtitles
+
+[Desktop Action KDEnlive]
+Name=KDEnlive Video Editor
+Exec=kdenlive
+
+[Desktop Action HandBrake]
+Name=HandBrake
+Exec=ghb
+
+[Desktop Action Mpv]
+Name=Mpv media player
+Exec=mpv --player-operation-mode=pseudo-gui
+" >> ${path}/${name}.desktop
+fi
+
+_echot "------- mpv"
+name=mpv; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
+_eval cp -n /usr/share/applications/${name}.desktop ${path}
+if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
+	echo "Actions=Separator;HandBrake;Brasero;MKVtoolnix;GnomeSubtitles;KDEnlive;Separator;Totem;
+
+[Desktop Action Separator]
+Name=−−−−−−−−−−
+Exec=
+
+[Desktop Action Brasero]
+Name=Brasero
+Exec=brasero
+
+[Desktop Action MKVtoolnix]
+Name=MKVtoolnix GUI
+Exec=mkvtoolnix-gui
+
+[Desktop Action GnomeSubtitles]
+Name=Gnome Subtitles
+Exec=gnome-subtitles
+
+[Desktop Action KDEnlive]
+Name=KDEnlive Video Editor
+Exec=kdenlive
+
+[Desktop Action HandBrake]
+Name=HandBrake
+Exec=ghb
+
+[Desktop Action Totem]
+Name=Totem media player
+Exec=totem
+" >> ${path}/${name}.desktop
+fi
+
+_echot "------- gmusicbrowser"
+name=gmusicbrowser; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
+_eval cp -n /usr/share/applications/${name}.desktop ${path}
+if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
+	menuadd="Separator;Lollypop;PulseaudioEqualizer;Separator;Audacity;Easytag;SoundJuicer;SoundConverter;"
+	sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${path}/${name}.desktop
+	echo "
+[Desktop Action Separator]
+Name=−−−−−−−−−−
+Exec=
+
+[Desktop Action Audacity]
+Name=Audacity
+Exec=audacity
+
+[Desktop Action Easytag]
+Name=Easytag
+Exec=easytag %F
+
+[Desktop Action Mixxx]
+Name=Mixxx
+Exec=mixxx
+
+[Desktop Action SoundJuicer]
+Name=SoundJuicer
+Exec=sound-juicer
+
+[Desktop Action SoundConverter]
+Name=Sound Converter
+Exec=soundconverter %U
+
+[Desktop Action PulseaudioEqualizer]
+Name=Pulseaudio Equalizer
+Exec=qpaeq
+" >> ${path}/${name}.desktop
+fi
+
+_echot "------- gimp"
+name=gimp; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
+_eval cp -n /usr/share/applications/${name}.desktop ${path}
+if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
+	echo "Actions=gThumb;Inkscape;Separator;SimpleScan;XSane;
+
+[Desktop Action Separator]
+Name=−−−−−−−−−−
+Exec=
+
+[Desktop Action gThumb]
+Name=gThumb
+Exec=gthumb %U
+
+[Desktop Action Inkscape]
+Name=Inkscape
+Exec=inkscape %F
+
+[Desktop Action SimpleScan]
+Name=Simple Scan
+Exec=simple-scan
+
+[Desktop Action XSane]
+Name=XSane Image scanning program
+Exec=xsane
+" >> ${path}/${name}.desktop
+fi
+
+_echot "------- libreoffice-startcenter"
+name=libreoffice-startcenter; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
+_eval cp -n /usr/share/applications/${name}.desktop ${path}
+if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
+	menuadd="Separator;Gcolor3;Calculator;Stopwatch;Activity;"
+	sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${path}/${name}.desktop
+	echo "
+[Desktop Action Separator]
+Name=−−−−−−−−−−
+Exec=
+
+[Desktop Action Activity]
+Name=Activity journal
+Exec=gnome-activity-journal
+
+[Desktop Action Calculator]
+Name=Calculator
+Exec=gnome-calculator
+
+[Desktop Action Stopwatch]
+Name=Stopwatch
+Exec=/usr/bin/stopwatch
+
+[Desktop Action Gcolor3]
+Name=Color Picker
+Exec=gcolor3
+" >> ${path}/${name}.desktop
+fi
+
+_echot "------- gnome-tweak-tool"
+name=org.gnome.tweaks; path=~/.local/share/applications; [ -d "${path}" ] || mkdir ${path}
+_eval cp -n /usr/share/applications/${name}.desktop ${path}
+if ! grep -q '\[Desktop Action Separator\]' ${path}/${name}.desktop; then
+	echo "Actions=Separator;SoftwareUpdates;SoftwareSources;Separator;Gparted;DiskUtility;DiskUsage;Sysinfo;Separator;
+
+[Desktop Action Separator]
+Name=−−−−−−−−−−
+Exec=
+
+[Desktop Action SoftwareUpdates]
+Name=Update Manager
+Exec=update-manager
+
+[Desktop Action Synaptic]
+Name=Synaptic
+Exec=synaptic
+
+[Desktop Action SoftwareSources]
+Name=Software Sources
+Exec=software-properties-gtk
+
+[Desktop Action DiskUsage]
+Name=Disk Usage
+Exec=baobab
+
+[Desktop Action DiskUtility]
+Name=Disk Utility
+Exec=gnome-disks
+
+[Desktop Action Gparted]
+Name=Gparted
+Exec=gksudo gparted
+
+[Desktop Action Sysinfo]
+Name=Sysinfo
+Exec=sysinfo
+" >> ${path}/${name}.desktop
+fi

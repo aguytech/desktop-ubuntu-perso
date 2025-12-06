@@ -24,7 +24,7 @@ export DEBIAN_FRONTEND=noninteractive
 ########################  SUB
 
 _SPATH=perso
-parts_perso="python libreoffice conf settings git root"
+parts_perso="python libreoffice conf launcher git root"
 for _PART in ${parts_perso}; do
 	_source_sub "${_PART}" ${_SPATH}
 done
