@@ -70,12 +70,71 @@ _echoA "Choose the right path to create a profile & close application"
 _askno "Validate to continue"
 firefox --ProfileManager
 
-_echot "------- user.js"
+_echot "------- firefox user.js"
 pth=${HOME}/.mozilla/firefox/${USER}
 [ -d "${pth}" ] || _eval mkdir -p ${pth}
 _keepmvts ${pth}/user.js
 _eval ln -s "${_PATH_BS}/conf/user.js" ${pth}/user.js
 _evalr chown ${USER}:${USER} ${pth}
+
+_echot "------- firefox launcher"
+name=firefox
+file=/usr/share/applications/${name}.desktop
+if [ -f ${file} ]; then
+	_eval cp --update=all ${file} ${pth}
+	if ! grep -q '\[Desktop Action Separator\]' ${pth}/${name}.desktop; then
+		menuadd="Separator;ProfileUser;ProfileManager;SafeMode;Separator;FirefoxDev;Chromium;Separator;Qarte;aMule;"
+		sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${pth}/${name}.desktop
+		echo "
+[Desktop Action Separator]
+Name=−−−−−−−−−−
+Exec=
+
+[Desktop Action ProfileUser]
+Name=Profile ubuntu
+Exec=firefox -P ubuntu
+
+[Desktop Action SafeMode]
+Name=Safe Mode
+Exec=firefox --safe-mode
+
+[Desktop Action ProfileManager]
+Name=Profile Manager
+Exec=firefox --ProfileManager
+
+[Desktop Action Thunderbird]
+Name=Thunderbird
+Exec=thunderbird
+
+[Desktop Action FirefoxDev]
+Name=Firefox Developper Edition
+Exec=firefox-dev -P ubuntu-dev
+
+[Desktop Action Chromium]
+Name=Chromium browser
+Exec=chromium-browser
+
+[Desktop Action Qarte]
+Name=Qarte
+Exec=qarte
+
+[Desktop Action aMule]
+Name=aMule
+Exec=amule
+
+[Desktop Action Skype]
+Name=Skype
+Exec=skype %U
+
+[Desktop Action Pidgin]
+Name=Pidgin
+Exec=pidgin
+" >> ${pth}/${name}.desktop
+	fi
+else
+	_echoe "${name} are skipped"
+	_echoe "${file} file not found"
+fi
 
 ########################  THUNDERBIRD
 
@@ -87,9 +146,46 @@ _echoA "Choose the right path to create a profile & close application"
 _askno "Validate to continue"
 thunderbird --ProfileManager
 
+_echot "------- thunderbird launcher"
+name=thunderbird
+file=/usr/share/applications/${name}.desktop
+if [ -f ${file} ]; then
+	_eval cp --update=all ${file} ${pth}
+	if ! grep -q '\[Desktop Action Separator\]' ${pth}/${name}.desktop; then
+		menuadd="Separator;Addressbook;ProfileManager;ProfileExtend;"
+		sed -i "s/^\(Actions=.*\)$/\1${menuadd}/" ${pth}/${name}.desktop
+		echo "
+[Desktop Action Separator]
+Name=−−−−−−−−−−
+Exec=
+
+[Desktop Action Addressbook]
+Name=Addressbook
+Exec=thunderbird -addressbook
+
+[Desktop Action ProfileManager]
+Name=Profile Manager
+Exec=thunderbird --ProfileManager
+
+[Desktop Action ProfileExtend]
+Name=Profile  Extend
+Exec=thunderbird -P extend
+
+[Desktop Action Compose]
+Name=Compose
+Exec=thunderbird -compose
+" >> ${pth}/${name}.desktop
+	fi
+else
+	_echoe "${name} are skipped"
+	_echoe "${file} file not found"
+fi
+
 ########################  LANGUAGES
 
 _echot "------- languages"
 _echoA "Close language window after validation."
 _askno "Validate to continue"
 gnome-language-selector
+
+
