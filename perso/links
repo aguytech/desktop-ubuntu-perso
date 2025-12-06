@@ -1,7 +1,6 @@
 #!/bin/bash
 
 cd ${HOME}
-nopart=
 
 ########################  HOME SHARED
 
@@ -13,28 +12,30 @@ _askno "Give a new list or valid the subdirectories list above to link to ${pth_
 [ "${_ANSWER}" ] && pths=${_ANSWER}
 
 if [ "${_ANSWER}" != 0 ]; then
-	for pth in ${pths}; do
-		msg=
-		pth_from=${pth}
-		pth_to=${pth_to_init}/${pth}
-		echo -n "${pth_from} "
-		if [ -e ${pth_to} ]; then
-			[ -h ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
-			[ -f ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
-			[ -d ${pth_from} ] && { rmdir ${pth_from} || msg="path is not empty"; }
-			if [ -e ${pth_from} ]; then
-				nopart=exit
-				_echoe "- !!! failed !!! ${msg}"
+	errors=start
+	while [ -n "${errors}" ]; do
+		errors=
+		for pth in ${pths}; do
+			msg=
+			pth_from=${pth}
+			pth_to=${pth_to_init}/${pth}
+			echo -n "${pth_from} "
+			if [ -e ${pth_to} ]; then
+				[ -h ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
+				[ -f ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
+				[ -d ${pth_from} ] && { rmdir ${pth_from} || msg="path is not empty"; }
+				if [ -e ${pth_from} ]; then
+					errors=y
+					_echoe "- !!! failed !!! ${msg}"
+				else
+					ln -s ${pth_to} ${pth_from}
+					echo "- ok"
+				fi
 			else
-				ln -s ${pth_to} ${pth_from}
-				echo "- ok"
+				_echoe "- *** skipped *** ${pth_to} is missing"
 			fi
-		else
-			nopart=exit
-			_echoe "- *** skipped *** ${pth_to} is missing"
-		fi
+		done
 	done
-	[ "${nopart}" ] && _exite "Please restart due to some errors"
 fi
 
 ########################  EXT SHARED
@@ -47,27 +48,29 @@ _askno "Give a new list or valid the subdirectories list above to link to ${pth_
 [ "${_ANSWER}" ] && pths=${_ANSWER}
 
 if [ "${_ANSWER}" != 0 ]; then
-	for pth in ${pths}; do
-		pth_from=${pth}
-		pth_to=${pth_to_init}/${pth}
-		echo -n "${pth} "
-		if [ -e ${pth_to} ]; then
-			[ -h ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
-			[ -f ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
-			[ -d ${pth_from} ] && { rmdir ${pth_from} || msg="path is not empty"; }
-			if [ -e ${pth_from} ]; then
-				nopart=exit
-				_echoe "- !!! failed !!! ${msg}"
+	errors=start
+	while [ -n "${errors}" ]; do
+		errors=
+		for pth in ${pths}; do
+			pth_from=${pth}
+			pth_to=${pth_to_init}/${pth}
+			echo -n "${pth} "
+			if [ -e ${pth_to} ]; then
+				[ -h ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
+				[ -f ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
+				[ -d ${pth_from} ] && { rmdir ${pth_from} || msg="path is not empty"; }
+				if [ -e ${pth_from} ]; then
+					errors=y
+					_echoe "- !!! failed !!! ${msg}"
+				else
+					ln -s ${pth_to} ${pth_from}
+					echo "- ok"
+				fi
 			else
-				ln -s ${pth_to} ${pth_from}
-				echo "- ok"
+				_echoe "- *** skipped *** ${pth_to} is missing"
 			fi
-		else
-			nopart=exit
-			_echoe "- *** skipped *** ${pth_to} is missing"
-		fi
+		done
 	done
-	[ "${nopart}" ] && _exite "Please restart due to some errors"
 fi
 
 ########################  VMS SHARED
@@ -80,27 +83,29 @@ _askno "Give a new list or valid the subdirectories list above to link to ${pth_
 [ "${_ANSWER}" ] && pths=${_ANSWER}
 
 if [ "${_ANSWER}" != 0 ]; then
-	for pth in ${pths}; do
-		pth_from=${pth}
-		pth_to=${pth_to_init}/${pth}
-		echo -n "${pth} "
-		if [ -e ${pth_to} ]; then
-			[ -h ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
-			[ -f ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
-			[ -d ${pth_from} ] && { rmdir ${pth_from} || msg="path is not empty"; }
-			if [ -e ${pth_from} ]; then
-				nopart=exit
-				_echoe "- !!! failed !!! ${msg}"
+	errors=start
+	while [ -n "${errors}" ]; do
+		errors=
+		for pth in ${pths}; do
+			pth_from=${pth}
+			pth_to=${pth_to_init}/${pth}
+			echo -n "${pth} "
+			if [ -e ${pth_to} ]; then
+				[ -h ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
+				[ -f ${pth_from} ] && echo rm ${pth_from} && rm ${pth_from}
+				[ -d ${pth_from} ] && { rmdir ${pth_from} || msg="path is not empty"; }
+				if [ -e ${pth_from} ]; then
+					errors=y
+					_echoe "- !!! failed !!! ${msg}"
+				else
+					ln -s ${pth_to} ${pth_from}
+					echo "- ok"
+				fi
 			else
-				ln -s ${pth_to} ${pth_from}
-				echo "- ok"
+				_echoe "- *** skipped *** ${pth_to} is missing"
 			fi
-		else
-			nopart=exit
-			_echoe "- *** skipped *** ${pth_to} is missing"
-		fi
+		done
 	done
-	[ "${nopart}" ] && _exite "Please restart due to some errors"
 fi
 
 return 0
