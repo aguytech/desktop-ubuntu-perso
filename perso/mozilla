@@ -80,6 +80,7 @@ _evalr chown ${USER}:${USER} ${pth}
 _echot "------- firefox launcher"
 name=firefox
 file=/usr/share/applications/${name}.desktop
+pth=~/.local/share/applications
 if [ -f ${file} ]; then
 	_eval cp --update=all ${file} ${pth}
 	if ! grep -q '\[Desktop Action Separator\]' ${pth}/${name}.desktop; then
@@ -149,6 +150,7 @@ thunderbird --ProfileManager
 _echot "------- thunderbird launcher"
 name=thunderbird
 file=/usr/share/applications/${name}.desktop
+pth=~/.local/share/applications
 if [ -f ${file} ]; then
 	_eval cp --update=all ${file} ${pth}
 	if ! grep -q '\[Desktop Action Separator\]' ${pth}/${name}.desktop; then
