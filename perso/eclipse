@@ -1,35 +1,60 @@
 #!/bin/bash
 
-_echoT "#################### START ${_PARTDEV}"
-
 ########################  DATA
+
+_PATH_SOFT=/ext/shared/Soft/linux
+_PATH_SOFT_BACKUP=/ext/shared/Soft/linux/backup
+
+_menu "Select a theme for eclipse" java tools
+_ECLIPSE_THEME=${_ANSWER}
+
+anstmp=${_PATH_SOFT_BACKUP}
+_askno "Give the software backup path to restore from ? ${anstmp}"
+_PATH_SOFT_BACKUP=${_ANSWER:-${anstmp}}
+
+_menu "Select the date to restore eclipse or none" none `ls -1r ${_PATH_SOFT_BACKUP}|sed -n "s|^eclipse_${_ECLIPSE_THEME}_\([0-9-]\+\)\.tar\.gz$|\1|p"`
+_ECLIPSE_DATE=${_ANSWER/none/}
+
+if [ -z ${_ECLIPSE_DATE} ]; then
+	anstmp="2025-12"
+	_askno "Give Eclipse version to install or none? ${anstmp}"
+	_ECLIPSE_VER=${_ANSWER:-${anstmp}}
+fi
 
 pth_opt=/opt/eclipse_${_ECLIPSE_THEME}
 pth_conf=.eclipse_${_ECLIPSE_THEME}
-pth_desk=~/.local/share/applications
 pth_proj=${HOME}/dev/eclipse-workspaces-${_ECLIPSE_THEME}
+pth_desk=~/.local/share/applications
 file_desk=${pth_desk}/eclipse_java.desktop
-file_bin=/usr/bin/eclipse_${_ECLIPSE_THEME}
+file_bin=/usr/local/bin/eclipse_${_ECLIPSE_THEME}
 
-file_desk_xtra=${_path_base}/xtra/eclipse_${_ECLIPSE_THEME}.desktop
+########################  REQUIRED
+
+file_desk_xtra=${_PATH_BASE}/xtra/eclipse_${_ECLIPSE_THEME}.desktop
 
 _require ${file_desk_xtra}
 
-########################  MAIN
+########################  BACKUP
 
-_echot "------- backup"
-pths=
 if [ -d "${pth_opt}" ] || [ -d ~/${pth_conf} ] || [ -d "${pth_proj}" ]; then
+	if ! [ -d ${_PATH_SOFT_BACKUP} ]; then
+		_evalr mkdir -p ${_PATH_SOFT_BACKUP}
+		_evalr chown ${USER}:${USER} ${_PATH_SOFT_BACKUP}
+	fi
+
+	file=${_PATH_SOFT_BACKUP}/eclipse_${_ECLIPSE_THEME}_backup_${_DATE}-$(date +%s).tar.gz
+	pths=
+	_echot "------- backup to "
 	for pth in ${pth_opt} ~/${pth_conf} ${pth_proj} ${file_desk} ${file_bin}; do
-		[ -e "${pth}" ] && pths+=" ${pth}"
+		[ -e ${pth} ] && pths+=" ${pth}"
 	done
-	tar czf ${_PATH_SOFT_BACKUP}/eclipse_${_ECLIPSE_THEME}_backup_${_DATE}-$(date +%s).tar.gz ${pth_opt} ${pths}
+	tar czf ${file} ${pths}
 fi
 
 _echot "------- clean instance"
 # delete existing folder
 for pth in ${pth_opt} ~/${pth_conf} ${pth_proj} ${file_desk} ${file_bin}; do
-	[ -e "${pth}" ] && _evalr rm -fR ${pth}
+	[[ -e ${pth} || -h ${pth} ]] && _evalr rm -fR ${pth}
 done
 
 ####################  RESTORE
@@ -37,41 +62,46 @@ done
 if [ "${_ECLIPSE_DATE}" ]; then
 
 	[ -h ~/dev ] || ln -s /home/shared/dev ~/dev
-	${S_PATH_SCRIPT}/backup-soft --restore ${_ECLIPSE_DATE} eclipse_${_ECLIPSE_THEME} --force
+	backup-soft --restore ${_ECLIPSE_DATE} eclipse_${_ECLIPSE_THEME} --force
 
 ####################  FRESH INSTALL
 
-elif [ "${_ECLIPSE_VER}" ]; then
+else [ "${_ECLIPSE_VER}" ]
+
+	anstmp=${_PATH_SOFT}
+	_askno "Give the software path to save ? ${anstmp}"
+	_PATH_SOFT=${_ANSWER:-${anstmp}}
 
 	_echot "------- create path"
-	for pth in ${pth_opt} ~/${pth_conf} ${pth_proj}; do
-		[ -d "${pth}" ] || _evalr mkdir -p ${pth}
-		chown 1000:1000 "${pth}"
+	for pth in ~/${pth_conf} ${pth_proj}; do
+		[ -d ${pth} ] || _evalr mkdir -p ${pth}
+		_evalr chown 1000:1000 ${pth}
 	done
 
 	cd /tmp
-
 	_echot "------- get"
-
 	file=eclipse-java-${_ECLIPSE_VER}-R-linux-gtk-x86_64.tar.gz
 	url=http://mirror.ibcp.fr/pub/eclipse//technology/epp/downloads/release/${_ECLIPSE_VER}/R/${file}
-
 	if [ -f "${_PATH_SOFT}/${file}" ]; then
-		cp ${_PATH_SOFT}/${file} .
+		_eval cp ${_PATH_SOFT}/${file} .
 	else
 		_ANSWER=${file}
-		while ! curl -o "$_ANSWER" "$url"; do
-			_ask "Unable to donwload:\n$url\nGive a good url to download ${file}\nConfirm"
+		_echot "------- download"
+		while ! _eval wget -q "${url}" -O "${_ANSWER}"; do
+			_ask "Unable to donwload:\n${url}\nGive a good url to download ${file}\nConfirm"
 		done
+		if ! [ -d "${_PATH_SOFT}" ]; then
+			_evalr mkdir -p ${_PATH_SOFT}
+			_evalr chown ${USER}:${USER} ${_PATH_SOFT}
+		fi
 		_evalr cp ${file} ${_PATH_SOFT}/
 	fi
 
 	_echot "------- install"
-	pth=eclipse
-	[ -d "${pth}" ] && rm -fR ${pth}
+	[ -d eclipse ] && _evalr rm -fR eclipse
 	_eval tar xzf ${file}
-	_evalr mv ${pth} ${pth_opt}
-	rm ${file}
+	_evalr mv eclipse ${pth_opt}
+	_eval rm ${file}
 
 	_echot "------- ${file_bin} bind"
 	sudo [ -e "${file_bin}" ] && _evalr rm ${file_bin}
@@ -79,7 +109,7 @@ elif [ "${_ECLIPSE_VER}" ]; then
 
 	_echot "------- launcher"
 	_eval cp ${file_desk_xtra} ${file_desk}
-	chmod +x ${file_desk}
+	_eval chmod +x ${file_desk}
 
 fi
 
@@ -87,15 +117,13 @@ fi
 
 _echot "------- conf"
 file=${pth_opt}/eclipse.ini
-_keepcd ${file}
+_keepcpts ${file}
 grep -q '^-Duser' ${file} || sed -i "/^-vmargs/ a-Duser.home=${HOME}/.eclipse_${_ECLIPSE_THEME}" ${file}
 sed -i "/^-Dosgi.instance.area.default/ s|=.*|=${pth_proj}/init|" ${file}
 #sed -i "/^-Dosgi.instance.area.default/ s|=.*|=${pth_proj}/eclipse-workspaces-${_ECLIPSE_THEME}|" ${file}
 
 _echot "------- jdk src doc"
 _install_pcks openjdk-21-source openjdk-21-doc
-
-_echoT "#################### END ${_PARTDEV}"
 
 <<KEEP
 ####  marketplace
