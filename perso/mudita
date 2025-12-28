@@ -13,4 +13,3 @@ _echot "------- configuration"
 _echoA "Please adjust volumes and routes and save profile after vaildation."
 _askno "Validate to continue"
 _eval mudita24 -p4
-

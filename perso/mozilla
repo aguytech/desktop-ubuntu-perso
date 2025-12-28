@@ -59,9 +59,6 @@ _evalr add-apt-repository -yn ppa:mozillateam/ppa
 _echot "------- apt update"
 _evalr apt update
 
-_echot "------- apt ugrade"
-_evalr apt upgrade -y
-
 _echot "------- firefox install"
 _install_pcks firefox
 
