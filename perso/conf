@@ -29,7 +29,7 @@ for pth in ${pths}; do
 done
 
 file=/etc/fstab
-if ! grep -q "${S_PATH_SCRIPT}" ${file}; then
+if [ -d ${pth_shared_bs} ] && ! grep -q "${S_PATH_SCRIPT}" ${file}; then
 	_echot "------- path ${S_PATH_SCRIPT}"
 	[ -d "${S_PATH_SCRIPT}" ] && _evalr rm -fR "${S_PATH_SCRIPT}"
 	[ -d "${S_PATH_SCRIPT}" ] || _evalr mkdir -p "${S_PATH_SCRIPT}"
@@ -42,6 +42,8 @@ ${pth_shared_bs}				${S_PATH_SCRIPT}	none	defaults,bind										0 0' >> ${file}
 	_echot "------- bind ${S_PATH_SCRIPT}"
 	_evalr mount ${S_PATH_SCRIPT}
 	[ -d ${S_PATH_SCRIPT} ] || _exite "Unable to mount path: '${S_PATH_SCRIPT}'"
+else
+	_echoE "------- binding ${S_PATH_SCRIPT} to ${pth_shared_bs} is skipping"
 fi
 
 _echot "------- reduce swappiness"
