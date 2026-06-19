@@ -71,7 +71,7 @@ _echot "------- firefox user.js"
 pth=${HOME}/.mozilla/firefox/${USER}
 [ -d "${pth}" ] || _eval mkdir -p ${pth}
 _keepmvts ${pth}/user.js
-_eval ln -s "${_PATH_BS}/conf/user.js" ${pth}/user.js
+_eval ln -s "${S_PATH_SCRIPT}/conf/user.js" ${pth}/user.js
 _evalr chown ${USER}:${USER} ${pth}
 
 _echot "------- firefox launcher"

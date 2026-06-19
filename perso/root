@@ -3,9 +3,9 @@
 ########################  REQUIRED
 
 _echot "------- required files"
-file_env=${_PATH_BS}/conf/.sh_env
-file_sh_aliases=${_PATH_BS}/conf/.sh_aliases
-file_sh_functions=${_PATH_BS}/conf/.sh_functions
+file_env=${S_PATH_SCRIPT}/conf/.sh_env
+file_sh_aliases=${S_PATH_SCRIPT}/conf/.sh_aliases
+file_sh_functions=${S_PATH_SCRIPT}/conf/.sh_functions
 _require ${file_env} ${file_sh_aliases} ${file_sh_functions}
 
 ########################  MAIN
@@ -72,7 +72,7 @@ sudo sed -i '/^#force_color_prompt=/ s|#||' /root/.bashrc
 
 _echot "------- .vimrc"
 file=/root/.vimrc
-file_from=${_PATH_BS}/conf/.vimrc
+file_from=${S_PATH_SCRIPT}/conf/.vimrc
 _keepmvts ${file}
 _evalr ln -s ${file_from} ${file}
 

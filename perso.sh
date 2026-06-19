@@ -8,9 +8,10 @@ _PATH_CONF=/usr/local/conf
 _PATH_LOG=/var/log/desktop-install
 _VER_NAME=ubuntu
 _path_base=$( readlink -f ${0%/*}/../ )
+S_PATH_SCRIPT=/usr/local/bs
 
 # inc
-file=${_path_base}/bs/inc
+file=${S_PATH_SCRIPT}/inc
 ! [ -f "${file}" ] && echo "Unable to find file: ${file}" && exit 1
 ! . ${file} && echo "Errors while sourcing file: ${file}" && exit 1
 

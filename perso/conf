@@ -3,9 +3,9 @@
 ########################  REQUIRED
 
 _echot "------- required files"
-file_env=${_PATH_BS}/conf/.sh_env
-file_sh_aliases=${_PATH_BS}/conf/.sh_aliases
-file_sh_functions=${_PATH_BS}/conf/.sh_functions
+file_env=${S_PATH_SCRIPT}/conf/.sh_env
+file_sh_aliases=${S_PATH_SCRIPT}/conf/.sh_aliases
+file_sh_functions=${S_PATH_SCRIPT}/conf/.sh_functions
 file_env_perso=${_path_base}/perso/conf/.sh_env_perso
 _require ${file_env} ${file_sh_aliases} ${file_sh_functions} ${file_env_perso}
 
@@ -29,19 +29,19 @@ for pth in ${pths}; do
 done
 
 file=/etc/fstab
-if ! grep -q "${_PATH_BS}" ${file}; then
-	_echot "------- path ${_PATH_BS}"
-	[ -d "${_PATH_BS}" ] && _evalr rm -fR "${_PATH_BS}"
-	[ -d "${_PATH_BS}" ] || _evalr mkdir -p "${_PATH_BS}"
-	_echot "------- ${file} ${_PATH_BS}"
+if ! grep -q "${S_PATH_SCRIPT}" ${file}; then
+	_echot "------- path ${S_PATH_SCRIPT}"
+	[ -d "${S_PATH_SCRIPT}" ] && _evalr rm -fR "${S_PATH_SCRIPT}"
+	[ -d "${S_PATH_SCRIPT}" ] || _evalr mkdir -p "${S_PATH_SCRIPT}"
+	_echot "------- ${file} ${S_PATH_SCRIPT}"
 	sudo sh -c "echo '
-# bind ${_PATH_BS}
-${pth_shared_bs}				${_PATH_BS}	none	defaults,bind										0 0' >> ${file}"
+# bind ${S_PATH_SCRIPT}
+${pth_shared_bs}				${S_PATH_SCRIPT}	none	defaults,bind										0 0' >> ${file}"
 	_echot "------- daemon-reload"
 	_evalr systemctl daemon-reload
-	_echot "------- bind ${_PATH_BS}"
-	_evalr mount ${_PATH_BS}
-	[ -d ${_PATH_BS} ] || _exite "Unable to mount path: '${_PATH_BS}'"
+	_echot "------- bind ${S_PATH_SCRIPT}"
+	_evalr mount ${S_PATH_SCRIPT}
+	[ -d ${S_PATH_SCRIPT} ] || _exite "Unable to mount path: '${S_PATH_SCRIPT}'"
 fi
 
 _echot "------- reduce swappiness"
@@ -92,7 +92,7 @@ _echot "------- user links"
 for file in .nanorc .tmux.conf .vimrc; do
 	pth=${HOME}/${file}
 	_keepmvts "${pth}"
-	_eval ln -s "${_PATH_BS}/conf/${file}" "${pth}"
+	_eval ln -s "${S_PATH_SCRIPT}/conf/${file}" "${pth}"
 done
 
 _echot "------- gtk bookmarks"
