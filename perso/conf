@@ -11,7 +11,6 @@ _require ${file_env} ${file_sh_aliases} ${file_sh_functions} ${file_env_perso}
 
 _echot "------- required paths"
 pth_shared_bs=/home/shared/repo/bs
-_requirep ${pth_shared_bs}
 
 ########################  SYSTEM
 
