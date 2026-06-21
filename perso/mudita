@@ -3,11 +3,20 @@
 ########################  REQUIRED
 
 file_mudita=${_path_base}/perso/xtra/Mudita24.desktop
-_require ${file_mudita}
+file_package=${_path_base}/perso/xtra/mudita24_1.0.3.tgz
+_require ${file_mudita} ${file_packages}
+
+_echot "------- install gtk2"
+_install_pcks libgtk2.0-0
 
 _echot "------- install"
-packages="mudita24"
-_install_pcks ${packages}
+pth=/tmp/mudita24
+_eval mkdir /tmp/mudita24
+_evalr tar xzf ${file_package} -C ${pth}
+for subpth in usr/bin usr/share/applications usr/share/doc usr/share/pixmaps;do
+	_evalr mv ${pth}/${subpth}/* /${subpth}
+done
+_evalr rm -fR ${pth}
 
 _echot "------- configuration"
 _echoA "Please adjust volumes and routes and save profile after vaildation."
