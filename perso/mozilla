@@ -169,10 +169,6 @@ Exec=thunderbird --ProfileManager
 [Desktop Action ProfileExtend]
 Name=Profile  Extend
 Exec=thunderbird -P extend
-
-[Desktop Action Compose]
-Name=Compose
-Exec=thunderbird -compose
 " >> ${pth}/${name}.desktop
 	fi
 else
