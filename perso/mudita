@@ -15,7 +15,7 @@ _echot "------- install"
 pth=/tmp/mudita24
 _eval mkdir /tmp/mudita24
 _evalr tar xzf ${file_package} -C ${pth}
-for subpth in usr/bin usr/share/applications usr/share/doc usr/share/pixmaps;do
+for subpth in usr/bin usr/share/applications usr/share/doc usr/share/pixmaps; do
 	_evalr mv ${pth}/${subpth}/* /${subpth}
 done
 _evalr rm -fR ${pth}
