@@ -3,7 +3,7 @@
 ########################  REQUIRED
 
 _echot "------- required paths"
-pth_xtra=${_path_base}/perso/xtra
+pth_xtra=${_PATH_BASE}/xtra
 _requirep ${pth_xtra}
 
 ########################  MAIN

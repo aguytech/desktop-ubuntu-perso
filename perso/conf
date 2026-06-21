@@ -6,7 +6,7 @@ _echot "------- required files"
 file_env=${S_PATH_SCRIPT}/conf/.sh_env
 file_sh_aliases=${S_PATH_SCRIPT}/conf/.sh_aliases
 file_sh_functions=${S_PATH_SCRIPT}/conf/.sh_functions
-file_env_perso=${_path_base}/perso/conf/.sh_env_perso
+file_env_perso=${_PATH_BASE}/conf/.sh_env_perso
 _require ${file_env} ${file_sh_aliases} ${file_sh_functions} ${file_env_perso}
 
 _echot "------- required paths"

@@ -2,9 +2,11 @@
 
 ########################  REQUIRED
 
-file_mudita=${_path_base}/perso/xtra/Mudita24.desktop
-file_package=${_path_base}/perso/xtra/mudita24_1.0.3.tgz
+file_mudita=${_PATH_BASE}/xtra/Mudita24.desktop
+file_package=${_PATH_BASE}/xtra/mudita24_1.0.3.tgz
 _require ${file_mudita} ${file_packages}
+
+########################  MAIN
 
 _echot "------- install gtk2"
 _install_pcks libgtk2.0-0
