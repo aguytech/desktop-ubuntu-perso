@@ -6,7 +6,8 @@ cd ${HOME}
 
 pth_to_init=/home/shared
 echo "================ ${pth_to_init}"
-pths="Books .config/gmusicbrowser .config/mpv Desktop dev Documents Downloads .gse-radio Help .perso Pictures repo .sublime-project Templates .themes .tmux Zotero"
+pths="Books .config/gmusicbrowser .config/mpv Desktop dev Documents Downloads .gse-radio Help"
+pths+=" .perso Pictures repo .sublime-project Templates .themes .tmux .vscode-oss .vscode-oss-shared Zotero"
 _echoa ${pths}
 _askno "Give a new list or valid the subdirectories list above to link to ${pth_to_init} or 0 to skip"
 [ "${_ANSWER}" ] && pths=${_ANSWER}
