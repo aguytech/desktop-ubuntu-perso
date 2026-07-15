@@ -3,7 +3,7 @@
 ########################  REQUIRED
 
 _echot "------- required paths"
-pth_conf=${_path_base}/perso/conf
+pth_conf=${_PATH_BASE}/conf
 _requirep ${pth_conf}
 
 ########################  DATA
